@@ -1,0 +1,47 @@
+<div class="menu-container">
+  <h1 class="menu-title">Selección de Menú</h1>
+  <app-weekly-calendar></app-weekly-calendar>
+
+  <div class="menu-types">
+    <button
+      *ngFor="let type of menuTypes; let i = index"
+      class="menu-type-button"
+      [class.selected]="type.selected"
+      (click)="selectMenuType(i)"
+    >
+      {{ type.name }}
+    </button>
+  </div>
+
+  <div class="menu-sections">
+    <section *ngFor="let section of menuSections; let i = index">
+      <h2 class="section-title">{{ section.title }}</h2>
+      <div class="options-container">
+        <button
+          *ngFor="let option of section.options; let j = index"
+          class="option-card"
+          [class.selected]="option.selected"
+          (click)="selectOption(i, j)"
+        >
+          {{ option.name }}
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <div class="taper-section">
+    <button
+      class="taper-button"
+      [class.selected]="taperSelected"
+      (click)="toggleTaper()"
+      [attr.aria-pressed]="taperSelected"
+    >
+      {{ taperSelected ? "Llevaré Táper" : "¿Vas a traer Táper?" }}
+    </button>
+  </div>
+  
+
+  <button class="confirm-button" (click)="confirmSelection()">
+    Confirmar Selección
+  </button>
+</div>

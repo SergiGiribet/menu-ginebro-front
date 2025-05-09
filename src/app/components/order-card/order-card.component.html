@@ -1,0 +1,18 @@
+<section class="order-card">
+    <div class="order-header">
+      <div class="date-container">
+        <div [innerHTML]="calendarIcon"></div>
+        <p class="date-text">{{ date }}</p>
+      </div>
+      <p *ngIf="tupper" class="order-type">{{ tupper }}</p>
+    </div>
+    <div class="menu-items">
+      <app-menu-item
+        *ngFor="let item of menuItems"
+        [type]="item.type"
+        [name]="item.name"
+      >
+      </app-menu-item>
+    </div>
+  </section>
+  
