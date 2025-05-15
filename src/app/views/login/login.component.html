@@ -1,0 +1,54 @@
+<div class="py-16">
+  <div class="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
+    <div
+      class="hidden lg:block lg:w-1/2 bg-cover"
+      style="background-image:url('https://www.ginebro.cat/web2/wp-content/uploads/2024/09/Escola-Ginebro-Formem-persones-1920x920-1.jpg')">
+    </div>
+
+    <div class="w-full p-8 lg:w-1/2">
+      <div class="text-center">
+        <img src="/images/logos/ginebro-logo.png" alt="Ginebro Logo" class="mx-auto h-12 mb-2" />
+        <h2 class="text-2xl font-semibold text-gray-700">Menu del Ginebró</h2>
+      </div>
+
+      <!-- Formulario -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-6">
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">Usuari</label>
+          <input
+            formControlName="user"
+            type="text"
+            placeholder="Introdueix el teu usuari"
+            class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">Contrasenya</label>
+          <input
+            formControlName="password"
+            type="password"
+            placeholder="Introdueix la teva contrasenya"
+            class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full"
+          />
+        </div>
+
+        <div class="mb-6">
+          <button
+            type="submit"
+            [disabled]="isSubmitting"
+            class="bg-green-500 text-white font-bold py-2 px-4 w-full rounded hover:bg-green-700 transition"
+          >
+            {{ isSubmitting ? 'Iniciant sessió...' : 'Iniciar sessió' }}
+          </button>
+        </div>
+      </form>
+
+      <div class="text-center">
+        <a (click)="forgotPassword()" class="text-sm text-green-600 hover:underline cursor-pointer">
+          Has oblidat la contrasenya?
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
