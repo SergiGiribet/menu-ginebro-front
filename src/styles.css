@@ -1,1 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
+app-weekly-calendar {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  display: block !important;
+}

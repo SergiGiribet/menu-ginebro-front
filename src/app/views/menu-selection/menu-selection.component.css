@@ -1,14 +1,30 @@
 :host {
-  display: contents;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 16px;
+  box-sizing: border-box;
 }
 
 .menu-container {
   display: flex;
   flex-direction: column;
-  width: 280px;
+  width: 100%;
+  max-width: 320px;
   padding: 24px;
   gap: 16px;
   font-family: Inter, sans-serif;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Ampliar ancho en pantallas grandes */
+@media (min-width: 768px) {
+  .menu-container {
+    max-width: 500px;
+  }
 }
 
 .menu-title {
@@ -56,11 +72,12 @@
 
 .options-container {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
 .option-card {
-  flex: 1;
+  flex: 1 1 calc(50% - 5px);
   padding: 12px;
   border-radius: 8px;
   border: 1px solid #e5e7eb;
