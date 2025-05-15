@@ -6,6 +6,7 @@ import { AuthService } from '../../Services/Auth/auth.service';
 import { ErrorMessages } from '../../environments/errors.config';
 import { AlertService } from '../../Services/Alert/alert.service';
 import { NavigationConfig } from '../../environments/navigation.config';
+import { IconComponent } from "../../components/icon/icon.component";
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,8 @@ import { NavigationConfig } from '../../environments/navigation.config';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-  ]
+    IconComponent
+]
 })
 export class LoginComponent {
   loginForm: FormGroup;

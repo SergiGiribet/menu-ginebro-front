@@ -20,7 +20,7 @@ export class AppComponent {
   constructor(private router: Router) {
 
     this.router.events.subscribe(() => {
-      this.showNav = this.router.url != '/login' && this.router.url != '/forgotpassword';
+      this.showNav = this.router.url != '/login' && this.router.url != '/forgotpassword' && this.router.url != '/register';
     });
   }
   title = 'testMenu1';

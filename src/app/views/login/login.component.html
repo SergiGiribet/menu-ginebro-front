@@ -1,54 +1,66 @@
-<div class="py-16">
-  <div class="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
-    <div
-      class="hidden lg:block lg:w-1/2 bg-cover"
-      style="background-image:url('https://www.ginebro.cat/web2/wp-content/uploads/2024/09/Escola-Ginebro-Formem-persones-1920x920-1.jpg')">
-    </div>
+<main class="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+  <section class="w-full max-w-sm bg-white rounded-lg shadow-[0_4px_6px_-4px_rgba(0,0,0,0.1),0_10px_15px_-3px_rgba(0,0,0,0.1)] px-10 py-10">
 
-    <div class="w-full p-8 lg:w-1/2">
-      <div class="text-center">
-        <img src="/images/logos/ginebro-logo.png" alt="Ginebro Logo" class="mx-auto h-12 mb-2" />
-        <h2 class="text-2xl font-semibold text-gray-700">Menu del Ginebró</h2>
-      </div>
+    <!-- Encabezado -->
+    <header class="flex flex-col items-center gap-2 mb-6">
+      <h1 class="text-[#009ca6] text-[20.4px] font-bold leading-8 font-sans">Iniciar Sessió</h1>
+      <p class="text-gray-600 text-sm leading-6 font-sans">Sistema de Menjador Escolar</p>
+    </header>
 
-      <!-- Formulario -->
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-6">
-        <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2">Usuari</label>
+    <!-- Formulario -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-6">
+
+      <!-- Usuari -->
+      <div class="flex flex-col gap-1">
+        <label for="email" class="text-gray-700 text-xs font-medium leading-5 font-sans">Correu electrònic</label>
+        <div class="relative">
+          <div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5">
+            <app-icon name="email"></app-icon>
+          </div>
           <input
+            id="email"
+            type="email"
             formControlName="user"
-            type="text"
-            placeholder="Introdueix el teu usuari"
-            class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full"
+            placeholder="el.teu@ginebro.cat"
+            class="w-full h-[41px] pl-10 pr-3 py-2 rounded-md border border-gray-300 text-base font-sans focus:outline-none focus:ring-2 focus:ring-[#009ca6]"
           />
         </div>
-
-        <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2">Contrasenya</label>
-          <input
-            formControlName="password"
-            type="password"
-            placeholder="Introdueix la teva contrasenya"
-            class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full"
-          />
-        </div>
-
-        <div class="mb-6">
-          <button
-            type="submit"
-            [disabled]="isSubmitting"
-            class="bg-green-500 text-white font-bold py-2 px-4 w-full rounded hover:bg-green-700 transition"
-          >
-            {{ isSubmitting ? 'Iniciant sessió...' : 'Iniciar sessió' }}
-          </button>
-        </div>
-      </form>
-
-      <div class="text-center">
-        <a (click)="forgotPassword()" class="text-sm text-green-600 hover:underline cursor-pointer">
-          Has oblidat la contrasenya?
-        </a>
       </div>
-    </div>
-  </div>
-</div>
+
+      <!-- Contrasenya -->
+      <div class="flex flex-col gap-1">
+        <label for="password" class="text-gray-700 text-xs font-medium leading-5 font-sans">Contrasenya</label>
+        <div class="relative">
+          <div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5">
+            <app-icon name="lock"></app-icon>
+          </div>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            placeholder="••••••••"
+            class="w-full h-[41px] pl-10 pr-3 py-2 rounded-md border border-gray-300 text-base font-sans focus:outline-none focus:ring-2 focus:ring-[#009ca6]"
+          />
+        </div>
+      </div>
+
+      <!-- Botó -->
+      <button
+        type="submit"
+        [disabled]="isSubmitting"
+        class="flex items-center justify-center gap-2 w-full h-10 bg-[#009ca6] text-white text-sm font-semibold rounded-md hover:bg-[#00838f] transition"
+      >
+        <div class="flex items-center justify-center">
+          <app-icon name="user"></app-icon>
+        </div>
+        <span>{{ isSubmitting ? 'Iniciant sessió...' : 'Iniciar Sessió' }}</span>
+      </button>
+
+      <!-- Enllaç registre -->
+      <a (click)="forgotPassword()" class="text-center text-[#009ca6] text-sm leading-6 font-sans hover:underline cursor-pointer">
+        Has oblidat la contrasenya?
+      </a>
+    </form>
+
+  </section>
+</main>
