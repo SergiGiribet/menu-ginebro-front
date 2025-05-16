@@ -1,69 +1,31 @@
 <section class="calendar-container">
-    <header class="calendar-header">
-      <button
-        class="nav-button"
-        (click)="navigatePreviousWeek()"
-        aria-label="Previous week"
-      >
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          class="arrow-left"
-        >
-          <path
-            d="M12.5 15L7.5 10L12.5 5"
-            stroke="#4B5563"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          ></path>
-        </svg>
-      </button>
-  
-      <p class="date-display">
-        <span>Semana del</span>
-        <span></span>
-        <span>{{ currentWeekDisplay }}</span>
-      </p>
-  
-      <button
-        class="nav-button"
-        (click)="navigateNextWeek()"
-        aria-label="Next week"
-      >
-        <svg
-          width="21"
-          height="20"
-          viewBox="0 0 21 20"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          class="arrow-right"
-        >
-          <path
-            d="M8.15625 15L13.1562 10L8.15625 5"
-            stroke="#4B5563"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          ></path>
-        </svg>
-      </button>
-    </header>
-  
-    <div class="days-container">
-      <button
-        *ngFor="let day of days"
-        class="day-button"
-        [class.selected]="day.isSelected"
-        (click)="selectDay(day)"
-        [attr.aria-selected]="day.isSelected"
-      >
-        <span class="day-name">{{ day.dayName }}</span>
-        <span class="day-number">{{ day.dayNumber }}</span>
-      </button>
-    </div>
-  </section>
-  
+  <header class="calendar-header">
+    <button class="nav-button" (click)="navigatePreviousWeek()" aria-label="Previous week">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="arrow-left">
+        <path d="M12.5 15L7.5 10L12.5 5" stroke="#4B5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+
+    <p class="date-display">Semana del {{ currentWeekDisplay }}</p>
+
+    <button class="nav-button" (click)="navigateNextWeek()" aria-label="Next week">
+      <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="arrow-right">
+        <path d="M8.15625 15L13.1562 10L8.15625 5" stroke="#4B5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </header>
+
+  <div class="days-container">
+    <button
+      *ngFor="let day of days"
+      class="day-button"
+      [class.selected]="day.isSelected"
+      (click)="selectDay(day)"
+      [attr.aria-selected]="day.isSelected"
+    >
+      <span class="day-name">{{ day.dayName }}</span>
+      <br>
+      <span class="day-number">{{ day.dayNumber }}</span>
+    </button>
+  </div>
+</section>
