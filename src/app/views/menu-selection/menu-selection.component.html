@@ -1,47 +1,70 @@
-<div class="menu-container">
-  <h1 class="menu-title">Selección de Menú</h1>
+<div class="flex justify-center p-4 pt-6 box-border min-h-screen md:min-h-0 overflow-x-hidden">
+  <div
+    class="flex flex-col w-full max-w-[320px] md:max-w-[500px] p-6 gap-4 font-[Inter] bg-white rounded-[12px] shadow-[0_4px_12px_rgba(0,0,0,0.1)] box-border overflow-hidden">
+
+    <h1 class="text-[18px] font-semibold text-center text-[#374151]">
+      Selección de Menú
+    </h1>
+
     <app-weekly-calendar></app-weekly-calendar>
 
-  <div class="menu-types">
-    <button
-      *ngFor="let type of menuTypes; let i = index"
-      class="menu-type-button"
-      [class.selected]="type.selected"
-      (click)="selectMenuType(i)"
-    >
-      {{ type.name }}
-    </button>
-  </div>
+    <!-- Menu Types -->
+    <div class="flex flex-col gap-2">
+      <button *ngFor="let type of menuTypes; let i = index"
+        class="w-full p-[10px] rounded-[8px] text-center text-[14px] cursor-pointer transition-colors border border-[#e5e7eb] bg-white text-black"
+        [ngClass]="{
+          'bg-[#009ca6] text-white border-transparent': type.selected,
+          'bg-white text-black border-[#e5e7eb]': !type.selected
+        }" (click)="selectMenuType(i)">
+        {{ type.name }}
+      </button>
+    </div>
 
-  <div class="menu-sections">
-    <section *ngFor="let section of menuSections; let i = index">
-      <h2 class="section-title">{{ section.title }}</h2>
-      <div class="options-container">
-        <button
-          *ngFor="let option of section.options; let j = index"
-          class="option-card"
-          [class.selected]="option.selected"
-          (click)="selectOption(i, j)"
-        >
-          {{ option.name }}
-        </button>
-      </div>
-    </section>
-  </div>
+    <!-- Menu Sections -->
+<!-- Menu Sections -->
+<div *ngIf="hasSelectedMenuType()" class="flex flex-col gap-4">
+  <section *ngFor="let section of filteredMenuSections(); let i = index">
+    <h2 class="text-[15px] text-[#374151] font-medium mb-2">
+      {{ section.title }}
+    </h2>
+    <div class="flex flex-wrap gap-[10px]">
+      <button *ngFor="let option of section.options; let j = index"
+        class="flex-[1_1_calc(50%-5px)] p-[12px] rounded-[8px] border border-[#e5e7eb] bg-transparent text-center text-[14px] cursor-pointer transition-colors"
+        [ngClass]="{
+          'bg-[#009ca61a] text-black border-[#009ca6]': option.selected,
+          'bg-transparent text-black border-[#e5e7eb]': !option.selected
+        }"
+        (click)="selectOption(getActualIndex(section.title), j)">
+        {{ option.name }}
+      </button>
+    </div>
+  </section>
+</div>
 
-  <div class="taper-section">
+
+   <!-- Taper & Confirm Button -->
+<div *ngIf="hasSelectedMenuType()" class="flex flex-col gap-4">
+  <!-- Taper Button -->
+  <div class="flex justify-center">
     <button
-      class="taper-button"
-      [class.selected]="taperSelected"
+      class="w-full p-[10px] rounded-[8px] border text-center text-[14px] cursor-pointer transition-colors"
+      [ngClass]="{
+        'border-[#009ca6] bg-[#009ca61a]': taperSelected,
+        'border-[#e5e7eb] bg-transparent': !taperSelected
+      }"
       (click)="toggleTaper()"
       [attr.aria-pressed]="taperSelected"
     >
-      {{ taperSelected ? "Llevaré Táper" : "¿Vas a traer Táper?" }}
+      {{ taperSelected ? 'Llevaré Táper' : '¿Vas a traer Táper?' }}
     </button>
   </div>
-  
 
-  <button class="confirm-button" (click)="confirmSelection()">
+  <!-- Confirm Button -->
+  <button
+    class="w-full p-[12px] rounded-[8px] bg-[#009ca6] text-white border-none text-[14px] cursor-pointer hover:bg-[#008891]"
+    (click)="confirmSelection()">
     Confirmar Selección
   </button>
+</div>
+
 </div>

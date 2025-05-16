@@ -1,4 +1,4 @@
-:host {
+/* :host {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,7 +20,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Ampliar ancho en pantallas grandes */
+
 @media (min-width: 768px) {
   .menu-container {
     max-width: 500px;
@@ -126,4 +126,4 @@
 
 .confirm-button:hover {
   background-color: #008891;
-}
+} */
