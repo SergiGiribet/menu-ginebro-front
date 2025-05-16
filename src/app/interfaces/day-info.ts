@@ -3,5 +3,6 @@ export interface DayInfo {
     dayNumber: number;
     isSelected: boolean;
     isHighlighted: boolean;
+    isToday: boolean;
   }
   

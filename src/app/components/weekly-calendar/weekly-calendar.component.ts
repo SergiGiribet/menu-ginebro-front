@@ -46,27 +46,34 @@ export class WeeklyCalendarComponent implements OnInit {
     );
   }
 
-  generateDays() {
-    this.days = [];
-    const startDate = new Date(this.currentWeekStartDate);
+generateDays() {
+  this.days = [];
+  const startDate = new Date(this.currentWeekStartDate);
+const today = new Date();
+for (let i = 0; i < 5; i++) {
+  const currentDate = new Date(startDate);
+  currentDate.setDate(startDate.getDate() + i);
 
-    // Generate 5 days (Monday to Friday)
-    for (let i = 0; i < 5; i++) {
-      const currentDate = new Date(startDate);
-      currentDate.setDate(startDate.getDate() + i);
+  const isSelected = false;
+  const isHighlighted = false;
 
-      // Default: Wednesday is selected, Thursday is highlighted
-      const isSelected = i === 2; // Wednesday
-      const isHighlighted = i === 3; // Thursday
+  const isToday =
+    currentDate.getDate() === today.getDate() &&
+    currentDate.getMonth() === today.getMonth() &&
+    currentDate.getFullYear() === today.getFullYear() &&
+    currentDate.getDay() >= 1 && currentDate.getDay() <= 5;
 
-      this.days.push({
-        dayName: this.dayNames[i],
-        dayNumber: currentDate.getDate(),
-        isSelected,
-        isHighlighted,
-      });
-    }
-  }
+  this.days.push({
+    dayName: this.dayNames[i],
+    dayNumber: currentDate.getDate(),
+    isSelected,
+    isHighlighted,
+    isToday,
+  });
+}
+
+}
+
 
   navigatePreviousWeek() {
     const newStartDate = new Date(this.currentWeekStartDate);
