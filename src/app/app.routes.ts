@@ -9,12 +9,13 @@ import { LoginComponent } from './views/login/login.component';
 import { ForgotPasswordComponent } from './views/forgot-password/forgot-password.component';
 import { LogoutComponent } from './components/Auth/logout/logout.component';
 import { StudentRegistrationComponent } from './views/student-registration/student-registration.component';
+import { PublicGuard } from './guards/public.guard';
 
 
 export const routes: Routes = [
-  { path: 'login', component: LoginComponent }, // Ruta para la pantalla de inicio de sesión
-  { path: 'forgotpassword', component: ForgotPasswordComponent }, // Ruta para la pantalla de recuperación de contraseña
-  { path: 'register', component: StudentRegistrationComponent }, // Ruta para la pantalla de registro
+  { path: 'login', component: LoginComponent, canActivate: [PublicGuard] },
+  { path: 'forgotpassword', component: ForgotPasswordComponent, canActivate: [PublicGuard] },
+  { path: 'register', component: StudentRegistrationComponent, canActivate: [PublicGuard] },
   { path: 'logout', component: LogoutComponent, canActivate: [AuthGuard]  }, // Ruta para la pantalla de bienvenida
   { path: '', component: WelcomeScreenComponent, canActivate: [AuthGuard] }, // Ruta raíz
   { path: 'menu-selection', component: MenuSelectionComponent, canActivate: [AuthGuard] }, // Ruta para el menú
