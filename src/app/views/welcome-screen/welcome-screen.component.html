@@ -1,16 +1,20 @@
 <div class="flex flex-col items-center min-h-screen">
-  <div class="w-full max-w-[848px] flex flex-col rounded-lg bg-white shadow-[0_4px_6px_-4px_rgba(0,0,0,0.1),0_10px_15px_-3px_rgba(0,0,0,0.1)]">
-    
-    <app-user-avatar username="Marc"></app-user-avatar>
-    
-    <div class="flex flex-col items-center px-6 md:px-[100px] lg:px-[200px] py-6">
+  <div
+    class="w-full max-w-[848px] flex flex-col rounded-lg bg-white shadow-[0_4px_6px_-4px_rgba(0,0,0,0.1),0_10px_15px_-3px_rgba(0,0,0,0.1)]"
+  >
+    <app-user-avatar [username]="student.name"></app-user-avatar>
+
+    <div
+      class="flex flex-col items-center px-6 md:px-[100px] lg:px-[200px] py-6"
+    >
       <div class="flex flex-col items-center gap-8 w-full max-w-[448px]">
         <app-school-meal-info></app-school-meal-info>
-        <app-course-info course="2º ESO"></app-course-info>
-        <app-action-button label="Seleccionar Menú" (click)="onSelectMenu()">
-        </app-action-button>
+
+        <app-action-button
+          label="Seleccionar Menú"
+          (click)="onSelectMenu()"
+        ></app-action-button>
       </div>
     </div>
-    
   </div>
 </div>

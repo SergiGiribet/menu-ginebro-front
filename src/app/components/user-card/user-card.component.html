@@ -1,26 +1,24 @@
-<div class="user-card">
-    <div class="user-card-content">
-      <div class="avatar-container" [innerHTML]="avatarSvg"></div>
-      <div class="user-info">
-        <div class="user-name-container">
-          <p class="user-name">
-            <span class="first-name">{{ firstName }}</span>
-            <span class="name-spacer"></span>
-            <span class="middle-name">{{ middleName }}</span>
-            <span class="name-spacer"></span>
-            <span class="last-name">{{ lastName }}</span>
-          </p>
-        </div>
-        <p class="user-role">{{ role }}</p>
+<div class="user-card" *ngIf="student">
+  <div class="user-card-content">
+    <div class="avatar-container" [innerHTML]="avatarSvg"></div>
+    <div class="user-info">
+      <div class="user-name-container">
+        <p class="user-name">
+          <span class="first-name">{{ student.name }}</span>
+          <span class="name-spacer"></span>
+          <span class="last-name">{{ student.lastName }}</span>
+        </p>
       </div>
-    </div>
-    <div class="user-details">
-      <p><strong>📚 Curso:</strong> {{ course }}</p>
-      <p><strong>📧 Email:</strong> {{ email }}</p>
-    </div>
-    <div class="user-settings">
-      <p class="settings-item">⚙️ Cambiar contraseña</p>
-      <p class="logout-item">🔴 Cerrar sesión</p>
+      <p class="user-role">Estudiante</p>
     </div>
   </div>
-  
+
+  <div class="user-details">
+    <p><strong>📧 Email:</strong> {{ student.email }}</p>
+  </div>
+
+  <div class="user-settings">
+    <p class="settings-item">⚙️ Cambiar contraseña</p>
+    <p class="logout-item">🔴 Cerrar sesión</p>
+  </div>
+</div>
