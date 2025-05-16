@@ -16,7 +16,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [PublicGuard] },
   { path: 'forgotpassword', component: ForgotPasswordComponent, canActivate: [PublicGuard] },
   { path: 'register', component: StudentRegistrationComponent, canActivate: [PublicGuard] },
-  { path: 'logout', component: LogoutComponent, canActivate: [AuthGuard]  }, // Ruta para la pantalla de bienvenida
+  { path: 'logout', component: LogoutComponent, canActivate: [AuthGuard]  },
   { path: '', component: WelcomeScreenComponent, canActivate: [AuthGuard] }, // Ruta raíz
   { path: 'menu-selection', component: MenuSelectionComponent, canActivate: [AuthGuard] }, // Ruta para el menú
   { path: 'food', component:  WelcomeScreenComponent, canActivate: [AuthGuard]}, // Ruta para la sección de comida
