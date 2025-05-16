@@ -16,6 +16,10 @@ export class AuthService extends BaseService {
     return this.post('login', credentials);
   }
 
+  register(credentials: { name: string; email: string; password: string; password_confirmation: string }): Observable<any> {
+    return this.post('register', credentials);
+  }
+
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');

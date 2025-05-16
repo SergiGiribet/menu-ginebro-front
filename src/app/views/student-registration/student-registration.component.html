@@ -9,49 +9,25 @@
     </header>
 
     <!-- Formulari -->
-    <form class="px-10 pb-6 flex flex-col gap-6" (ngSubmit)="onSubmit()">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="px-10 pb-6 flex flex-col gap-6">
 
       <!-- Nom -->
       <div class="flex flex-col gap-1">
         <label for="name" class="text-gray-700 text-xs font-medium">Nom</label>
         <div class="relative">
           <app-icon name="user" class="absolute left-3 top-2.5 w-5 h-5 text-gray-400"></app-icon>
-          <input type="text" id="name" name="name" placeholder="El teu nom"
-            class="w-full h-[41px] pl-10 pr-3 py-2 rounded-md border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-[#009ca6]"
-            [(ngModel)]="student.name" required />
+          <input type="text" id="name" formControlName="name" placeholder="El teu nom"
+            class="w-full h-[41px] pl-10 pr-3 py-2 rounded-md border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-[#009ca6]" />
         </div>
       </div>
-
-      <!-- Cognoms -->
-      <div class="flex flex-col gap-1">
-        <label for="lastName" class="text-gray-700 text-xs font-medium">Cognoms</label>
-        <div class="relative">
-          <app-icon name="user" class="absolute left-3 top-2.5 w-5 h-5 text-gray-400"></app-icon>
-          <input type="text" id="lastName" name="lastName" placeholder="Els teus cognoms"
-            class="w-full h-[41px] pl-10 pr-3 py-2 rounded-md border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-[#009ca6]"
-            [(ngModel)]="student.lastName" required />
-        </div>
-      </div>
-
-      <!-- Curs -->
-      <!-- <div class="flex flex-col gap-1">
-        <label for="course" class="text-gray-700 text-xs font-medium">Curs</label>
-        <select id="course" name="course"
-          class="w-full h-[41px] pl-3 pr-3 py-2 rounded-md border border-gray-300 text-base bg-white focus:outline-none focus:ring-2 focus:ring-[#009ca6]"
-          [(ngModel)]="student.course" required>
-          <option value="" disabled selected>Selecciona el teu curs</option>
-          <option *ngFor="let course of courses" [value]="course">{{ course }}</option>
-        </select>
-      </div> -->
 
       <!-- Correu -->
       <div class="flex flex-col gap-1">
         <label for="email" class="text-gray-700 text-xs font-medium">Correu electrònic</label>
         <div class="relative">
           <app-icon name="email" class="absolute left-3 top-2.5 w-5 h-5 text-gray-400"></app-icon>
-          <input type="email" id="email" name="email" placeholder="el@teu.email"
-            class="w-full h-[41px] pl-10 pr-3 py-2 rounded-md border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-[#009ca6]"
-            [(ngModel)]="student.email" required />
+          <input type="email" id="email" formControlName="email" placeholder="el@teu.email"
+            class="w-full h-[41px] pl-10 pr-3 py-2 rounded-md border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-[#009ca6]" />
         </div>
       </div>
 
@@ -60,17 +36,28 @@
         <label for="password" class="text-gray-700 text-xs font-medium">Contrasenya</label>
         <div class="relative">
           <app-icon name="lock" class="absolute left-3 top-2.5 w-5 h-5 text-gray-400"></app-icon>
-          <input type="password" id="password" name="password" placeholder="••••••••"
-            class="w-full h-[41px] pl-10 pr-3 py-2 rounded-md border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-[#009ca6]"
-            [(ngModel)]="student.password" required />
+          <input type="password" id="password" formControlName="password" placeholder="La teva contrasenya"
+            class="w-full h-[41px] pl-10 pr-3 py-2 rounded-md border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-[#009ca6]" />
+        </div>
+      </div>
+
+      <!-- Confirmació de Contrasenya -->
+      <div class="flex flex-col gap-1">
+        <label for="password_confirmation" class="text-gray-700 text-xs font-medium">Confirma la Contrasenya</label>
+        <div class="relative">
+          <app-icon name="lock" class="absolute left-3 top-2.5 w-5 h-5 text-gray-400"></app-icon>
+          <input type="password" id="password_confirmation" formControlName="password_confirmation" placeholder="Introduïu la contrasenya de nou"
+            class="w-full h-[41px] pl-10 pr-3 py-2 rounded-md border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-[#009ca6]" />
         </div>
       </div>
 
       <!-- Botó -->
       <button type="submit"
-        class="w-full h-10 bg-[#009ca6] text-white text-sm font-medium rounded-md flex items-center justify-center gap-2 hover:bg-[#00838f] transition">
+        class="w-full h-10 bg-[#009ca6] text-white text-sm font-medium rounded-md flex items-center justify-center gap-2 hover:bg-[#00838f] transition"
+        [disabled]="registerForm.invalid || isSubmitting">
         <app-icon name="add-user" class="w-5 h-5"></app-icon>
-        <span>Completar registre</span>
+        <span *ngIf="!isSubmitting">Completar registre</span>
+        <span *ngIf="isSubmitting">Registrant...</span>
       </button>
     </form>
 
