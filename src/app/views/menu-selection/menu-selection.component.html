@@ -6,7 +6,8 @@
       Selección de Menú
     </h1>
 
-    <app-weekly-calendar></app-weekly-calendar>
+    <!-- 🎯 Bind the daySelected event to your handler -->
+    <app-weekly-calendar (daySelected)="onDateSelected($event)"></app-weekly-calendar>
 
     <!-- Menu Types -->
     <div class="flex flex-col gap-2">
@@ -15,56 +16,55 @@
         [ngClass]="{
           'bg-[#009ca6] text-white border-transparent': type.selected,
           'bg-white text-black border-[#e5e7eb]': !type.selected
-        }" (click)="selectMenuType(i)">
+        }"
+        (click)="selectMenuType(i)">
         {{ type.name }}
       </button>
     </div>
 
     <!-- Menu Sections -->
-<!-- Menu Sections -->
-<div *ngIf="hasSelectedMenuType()" class="flex flex-col gap-4">
-  <section *ngFor="let section of filteredMenuSections(); let i = index">
-    <h2 class="text-[15px] text-[#374151] font-medium mb-2">
-      {{ section.title }}
-    </h2>
-    <div class="flex flex-wrap gap-[10px]">
-      <button *ngFor="let option of section.options; let j = index"
-        class="flex-[1_1_calc(50%-5px)] p-[12px] rounded-[8px] border border-[#e5e7eb] bg-transparent text-center text-[14px] cursor-pointer transition-colors"
-        [ngClass]="{
-          'bg-[#009ca61a] text-black border-[#009ca6]': option.selected,
-          'bg-transparent text-black border-[#e5e7eb]': !option.selected
-        }"
-        (click)="selectOption(getActualIndex(section.title), j)">
-        {{ option.name }}
+    <div *ngIf="hasSelectedMenuType()" class="flex flex-col gap-4">
+      <section *ngFor="let section of filteredMenuSections(); let i = index">
+        <h2 class="text-[15px] text-[#374151] font-medium mb-2">
+          {{ section.title }}
+        </h2>
+        <div class="flex flex-wrap gap-[10px]">
+          <button *ngFor="let option of section.options; let j = index"
+            class="flex-[1_1_calc(50%-5px)] p-[12px] rounded-[8px] border border-[#e5e7eb] bg-transparent text-center text-[14px] cursor-pointer transition-colors"
+            [ngClass]="{
+              'bg-[#009ca61a] text-black border-[#009ca6]': option.selected,
+              'bg-transparent text-black border-[#e5e7eb]': !option.selected
+            }"
+            (click)="selectOption(getActualIndex(section.title), j)">
+            {{ option.name }}
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Taper & Confirm Button -->
+    <div *ngIf="hasSelectedMenuType()" class="flex flex-col gap-4">
+      <!-- Taper Button -->
+      <div class="flex justify-center">
+        <button
+          class="w-full p-[10px] rounded-[8px] border text-center text-[14px] cursor-pointer transition-colors"
+          [ngClass]="{
+            'border-[#009ca6] bg-[#009ca61a]': taperSelected,
+            'border-[#e5e7eb] bg-transparent': !taperSelected
+          }"
+          (click)="toggleTaper()"
+          [attr.aria-pressed]="taperSelected">
+          {{ taperSelected ? 'Llevaré Táper' : '¿Vas a traer Táper?' }}
+        </button>
+      </div>
+
+      <!-- Confirm Button -->
+      <button
+        class="w-full p-[12px] rounded-[8px] bg-[#009ca6] text-white border-none text-[14px] cursor-pointer hover:bg-[#008891]"
+        (click)="confirmSelection()">
+        Confirmar Selección
       </button>
     </div>
-  </section>
-</div>
 
-
-   <!-- Taper & Confirm Button -->
-<div *ngIf="hasSelectedMenuType()" class="flex flex-col gap-4">
-  <!-- Taper Button -->
-  <div class="flex justify-center">
-    <button
-      class="w-full p-[10px] rounded-[8px] border text-center text-[14px] cursor-pointer transition-colors"
-      [ngClass]="{
-        'border-[#009ca6] bg-[#009ca61a]': taperSelected,
-        'border-[#e5e7eb] bg-transparent': !taperSelected
-      }"
-      (click)="toggleTaper()"
-      [attr.aria-pressed]="taperSelected"
-    >
-      {{ taperSelected ? 'Llevaré Táper' : '¿Vas a traer Táper?' }}
-    </button>
   </div>
-
-  <!-- Confirm Button -->
-  <button
-    class="w-full p-[12px] rounded-[8px] bg-[#009ca6] text-white border-none text-[14px] cursor-pointer hover:bg-[#008891]"
-    (click)="confirmSelection()">
-    Confirmar Selección
-  </button>
-</div>
-
 </div>
