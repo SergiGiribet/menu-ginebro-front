@@ -22,7 +22,7 @@ export default class MenuSelectionComponent implements OnInit {
   menuSections: MenuSection[] = [];
 
   taperSelected = false;
-  selectedDate: Date = new Date(); // default to today
+  selectedDate: Date = new Date();
 
   constructor(private http: HttpClient) {}
 
@@ -38,7 +38,7 @@ export default class MenuSelectionComponent implements OnInit {
   loadMenuFromBackend(): void {
     if (!this.selectedDate) return;
 
-    const formattedDate = this.selectedDate.toISOString().split('T')[0]; // yyyy-mm-dd
+    const formattedDate = this.selectedDate.toISOString().split('T')[0];
     const url = `${API_CONFIG.baseUrl}/menus/${formattedDate}`;
 
     this.http.get<any>(url).subscribe({

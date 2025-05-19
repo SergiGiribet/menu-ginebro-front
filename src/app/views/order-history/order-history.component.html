@@ -1,28 +1,25 @@
 <main class="order-history-container">
-    <div class="content-wrapper">
-      <header class="header">
-        <div class="title-container">
-          <div [innerHTML]="clockIcon"></div>
-          <div class="title">
-            <h1 class="title-text">Historial de Pedidos</h1>
-          </div>
+  <div class="content-wrapper">
+    <header class="header">
+      <div class="title-container">
+        <div [innerHTML]="clockIcon"></div>
+        <div class="title">
+          <h1 class="title-text">Historial de Pedidos</h1>
         </div>
-        <button class="back-button">
-          <span>Volver al Menú</span>
-        </button>
-      </header>
-  
-    <!-- No finalizado -->
-      <section class="orders-list">
-        @for (order of orders; track $index) {
-          <app-order-card
-            [date]="order.date"
-            [tupper]="order.tupper"
-            [menuItems]="order.menuItems"
-          ></app-order-card>
-        }
-      </section>
-      <!--  -->
-    </div>
-  </main>
-  
+      </div>
+      <button class="back-button">
+        <span>Volver al Menú</span>
+      </button>
+    </header>
+
+    <!-- Order List -->
+    <section class="orders-list">
+      <app-order-card
+        *ngFor="let order of orders; index as i"
+        [date]="order.date"
+        [tupper]="order.tupper"
+        [menuItems]="order.menuItems">
+      </app-order-card>
+    </section>
+  </div>
+</main>
