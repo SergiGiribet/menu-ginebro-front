@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Student } from '../../interfaces/student';
 import { Order, MenuItem } from '../../interfaces/order-history';
 import { API_CONFIG } from '../../environments/api.config';
-
+import { UsersService } from '../../Services/Admin/users/users.service';
 @Component({
   selector: 'app-orders-dashboard',
   templateUrl: './orders-dashboard.component.html',
@@ -28,7 +28,12 @@ export class OrdersDashboardComponent implements OnInit {
     dessert?: MenuItem;
   }[] = [];
 
-  constructor(private http: HttpClient) {}
+  loadingOrders = true;
+
+  constructor(
+    private http: HttpClient,
+    private usersService: UsersService
+  ) { }
 
   ngOnInit(): void {
     this.loadAllData();
@@ -50,8 +55,6 @@ export class OrdersDashboardComponent implements OnInit {
   }
 
   loadMenus(selectedDate: string): void {
-    const menuDay = this.selectedDate;
-
     const url = `${API_CONFIG.baseUrl}/menus/${selectedDate}`;
     this.http.get<any>(url).subscribe({
       next: (response) => {
@@ -80,8 +83,6 @@ export class OrdersDashboardComponent implements OnInit {
     }
   }
 
-  loadingOrders = true;
-
   loadOrders(date: string): void {
     this.loadingOrders = true;
     const url = `${API_CONFIG.baseUrl}/orders_by_date/${date}`;
@@ -97,17 +98,14 @@ export class OrdersDashboardComponent implements OnInit {
   }
 
   loadUsers(): void {
-    const url = `${API_CONFIG.baseUrl}/users`;
-    this.http.get<any>(url).subscribe({
-      next: (response) => {
-        if (response.data) {
-          this.students = response.data.map((user: any) => ({
-            id: user.id,
-            name: user.name,
-            lastName: user.last_name,
-            email: user.email,
-          }));
-        }
+    this.usersService.getAll().subscribe({
+      next: (users: any) => {
+        this.students = users.data.map((user: any) => ({
+          id: user.id,
+          name: user.name,
+          lastName: user.last_name,
+          email: user.email,
+        }));
       },
       error: (err) => {
         console.error('Error loading users:', err);
