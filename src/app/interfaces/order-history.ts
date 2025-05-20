@@ -5,8 +5,7 @@ export interface MenuItem {
 
 export interface Order {
   id: number;
-  user: userData;
-  user_id: number;
+  userData: userData;
   order_date: string;
   allergies: string;
   order_type_id: number;

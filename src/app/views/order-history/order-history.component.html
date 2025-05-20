@@ -16,9 +16,10 @@
     <section class="orders-list">
       <app-order-card
         *ngFor="let order of orders; index as i"
-        [date]="order.date"
+        [date]="order.order_date"
         [tupper]="order.tupper"
-        [menuItems]="order.menuItems">
+        [menuItems]="order.menuItems"
+      >
       </app-order-card>
     </section>
   </div>

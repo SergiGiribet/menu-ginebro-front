@@ -85,54 +85,50 @@
     </button>
   </div>
 
-  <div *ngIf="activeTab === 'orders'" class="table-container">
-    <div class="mt-8">
-      <div *ngIf="orders && orders.length > 0; else noOrders">
-        <h2 class="text-2xl font-bold mb-4">Orders for {{ selectedDate }}</h2>
+  <div *ngIf="activeTab === 'ordres'" class="orders-container">
+    <table class="orders-table">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Email</th>
+          <th>Order Date</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Allergies</th>
+          <th>Tupper</th>
+          <th>Menu Items</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders">
+          <td>{{ order.userData.name }} {{ order.userData.last_name }}</td>
+          <td>{{ order.userData.email }}</td>
+          <td>{{ order.order_date }}</td>
+          <td>{{ order.order_type_id }}</td>
+          <td>{{ order.order_status_id }}</td>
+          <td>{{ order.allergies || "—" }}</td>
+          <td>{{ order.tupper || "—" }}</td>
+          <td>
+            <p *ngFor="let item of order.menuItems">
+              {{ item.type }}: {{ item.name }}
+            </p>
+          </td>
 
-        <div
-          *ngFor="let order of orders"
-          class="border border-gray-300 rounded p-4 mb-4 shadow-sm"
-        >
-          <div class="font-semibold text-lg text-gray-800 mb-2">
-            {{ order.user.name }} {{ order.user.last_name }}
-            <span class="text-sm text-gray-500">({{ order.user.email }})</span>
-          </div>
-
-          <div class="text-sm text-gray-700 mb-1">
-            <strong>Order Date:</strong> {{ order.order_date }}
-          </div>
-          <div class="text-sm text-gray-700 mb-1">
-            <strong>Order Type:</strong> {{ order.order_type_id }}
-          </div>
-          <div class="text-sm text-gray-700 mb-1">
-            <strong>Status:</strong> {{ order.order_status_id }}
-          </div>
-          <div class="text-sm text-red-500 mb-2" *ngIf="order.allergies">
-            <strong>Allergies:</strong> {{ order.allergies }}
-          </div>
-          <div class="text-sm text-gray-700 mb-2" *ngIf="order.tupper">
-            <strong>Tupper:</strong> {{ order.tupper }}
-          </div>
-
-          <div class="mt-2">
-            <h3 class="font-semibold text-gray-800">Menu Items:</h3>
-            <ul class="list-disc list-inside text-sm text-gray-700">
+          <td>
+            <ul>
               <li *ngFor="let item of order.menuItems">
                 {{ item.type }}: {{ item.name }}
               </li>
             </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- Fallback if no orders found -->
-      <ng-template #noOrders>
-        <div *ngIf="!loadingOrders" class="text-gray-500 text-center py-4">
-          No orders found for {{ selectedDate }}.
-        </div>
-      </ng-template>
-    </div>
+          </td>
+        </tr>
+        <tr *ngIf="orders.length === 0">
+          <td colspan="8" class="empty-state">
+            No orders found for {{ selectedDate }}.
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <div *ngIf="activeTab === 'menus'" class="menus-container">
