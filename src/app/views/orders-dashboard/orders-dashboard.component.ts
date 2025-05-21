@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';  // <-- import FormsModule here
 import { Student } from '../../interfaces/student';
 import { Order, MenuItem } from '../../interfaces/order-history';
 import { UsersService } from '../../Services/Admin/users/users.service';
@@ -11,11 +12,11 @@ import { MenusService } from '../../Services/Menus/menu.service';
   templateUrl: './orders-dashboard.component.html',
   styleUrls: ['./orders-dashboard.component.css'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],  // <-- add FormsModule here
 })
 export class OrdersDashboardComponent implements OnInit {
-  activeTab = 'orders';
-  selectedDate = '2025-05-27';
+  activeTab = 'ordres';
+  selectedDate = new Date().toISOString().split('T')[0];
 
   students: Student[] = [];
   orders: Order[] = [];
@@ -23,11 +24,18 @@ export class OrdersDashboardComponent implements OnInit {
 
   loadingOrders = true;
 
+  // Status options for the select dropdown
+  statusOptions = [
+    { value: 1, label: 'Pendent' },
+    { value: 2, label: 'En preparació' },
+    { value: 3, label: 'Entregat' }
+  ];
+
   constructor(
     private usersService: UsersService,
     private ordersService: OrdersService,
     private menusService: MenusService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loadAllData();
@@ -65,10 +73,14 @@ export class OrdersDashboardComponent implements OnInit {
 
   getDishType(id: number): string {
     switch (id) {
-      case 1: return 'Primer Plat';
-      case 2: return 'Segundo Plat';
-      case 3: return 'Postre';
-      default: return 'Altre';
+      case 1:
+        return 'Primer Plat';
+      case 2:
+        return 'Segundo Plat';
+      case 3:
+        return 'Postre';
+      default:
+        return 'Altre';
     }
   }
 
@@ -117,5 +129,10 @@ export class OrdersDashboardComponent implements OnInit {
       this.selectedDate = input.value;
       this.loadAllData();
     }
+  }
+
+  onStatusChange(order: Order): void {
+    // Optional: implement backend update logic here
+    console.log('Order status changed:', order);
   }
 }

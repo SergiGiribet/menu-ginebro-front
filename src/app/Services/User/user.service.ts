@@ -15,18 +15,19 @@ export class StudentService {
   constructor(private http: HttpClient) {}
 
   getStudentById(id: number): Observable<Student> {
-    // Return cached version if already loaded
     if (this.cachedStudent) {
       return of(this.cachedStudent);
     }
 
-    // Otherwise, fetch from API
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.get<{ status: number; data: Student }>(`${this.baseUrl}/${id}`, { headers })
+    return this.http
+      .get<{ status: number; data: Student }>(`${this.baseUrl}/${id}`, {
+        headers,
+      })
       .pipe(
-        map(response => {
+        map((response) => {
           const user = response.data;
           this.saveStudent(user);
           return user;
