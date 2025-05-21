@@ -81,12 +81,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let order of orders" [ngClass]="{
-              'bg-yellow-300': order.orderStatus.id === 1,
-              'bg-blue-300': order.orderStatus.id === 2,
-              'bg-green-300': order.orderStatus.id === 3,
-              'bg-red-300': order.orderStatus.id === 4
-        }" class="border-b border-gray-200">
+        <tr *ngFor="let order of orders" class="border-b border-gray-200">
           <td class="px-6 py-3">{{ order.userData.name }} {{ order.userData.last_name }}</td>
           <td class="px-6 py-3">{{ order.userData.email }}</td>
           <td class="px-6 py-3">{{ order.order_date }}</td>
@@ -96,13 +91,23 @@
           <td class="px-6 py-3">{{ order.orderDetail.option2 || '—' }}</td>
           <td class="px-6 py-3">{{ order.orderDetail.option3 || '—' }}</td>
           <td class="px-6 py-3">
-            <select [(ngModel)]="order.orderStatus.id" name="statusSelect{{ order.id }}"
-              class="border border-gray-300 rounded px-2 py-1 text-sm" (change)="onStatusChange(order)">
-              <option *ngFor="let option of statusOptions" [value]="option.value">
-                {{ option.label }}
-              </option>
-            </select>
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 rounded-sm" [ngClass]="{
+                  'bg-yellow-400': order.orderStatus.id === 1,
+                  'bg-blue-400': order.orderStatus.id === 2,
+                  'bg-green-400': order.orderStatus.id === 3,
+                  'bg-red-400': order.orderStatus.id === 4
+                }">
+              </div>
+              <select [(ngModel)]="order.orderStatus.id" name="statusSelect{{ order.id }}"
+                class="rounded px-2 py-1 text-sm" (change)="onStatusChange(order)">
+                <option *ngFor="let option of statusOptions" [value]="option.value">
+                  {{ option.label }}
+                </option>
+              </select>
+            </div>
           </td>
+
           <td class="px-6 py-3">{{ order.has_tupper === 1 ? 'Sí' : 'No' }}</td>
         </tr>
         <tr *ngIf="orders.length === 0">
