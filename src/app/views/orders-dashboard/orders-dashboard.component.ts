@@ -79,24 +79,48 @@ export class OrdersDashboardComponent implements OnInit {
       this.menusService.getByDate(date).toPromise()
         .then((res: any) => {
           const dishes = res.data?.dishes || [];
-          const parsedMenus: MenuItem[] = dishes.map((dish: any) => ({
-            type: this.getDishType(dish.dish_type_id),
-            name: JSON.parse(dish.options)[0] || 'N/A',
-            date
-          }));
+          console.log('Date:', date);
+          console.log('Dishes:', dishes);
+
+          const parsedMenus: MenuItem[] = dishes.map((dish: any) => {
+            let name = 'N/A';
+
+            try {
+              let options = dish.options;
+              if (typeof options === 'string') {
+                options = JSON.parse(options);
+              }
+              name = Array.isArray(options) && options.length > 0 ? options[0] : 'N/A';
+            } catch (e) {
+              console.error(`Error parsing options for dish ID ${dish.id}:`, dish.options, e);
+            }
+
+            return {
+              type: this.getDishType(dish.dish_type_id),
+              name,
+              date
+            };
+          });
+
+          console.log('Parsed Menus:', parsedMenus);
           return { date, menus: parsedMenus };
         })
-        .catch(() => ({ date, menus: [] }))
+        .catch((err) => {
+          if (err.status === 404) {
+            console.error(`No menu found for date: ${date}`);
+          } else {
+            console.error(`Error fetching menu for date ${date}:`, err);
+          }
+          return { date, menus: [] };
+        })
     );
 
     Promise.all(menuPromises)
       .then((results) => {
         this.weeklyMenus = results;
-      })
-      .catch((err) => {
-        console.error('Error loading weekly menus:', err);
       });
   }
+
 
   getDishType(id: number): string {
     switch (id) {
