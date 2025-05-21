@@ -32,7 +32,8 @@ export class OrdersDashboardComponent implements OnInit {
   statusOptions = [
     { value: 1, label: 'Pendent' },
     { value: 2, label: 'En preparació' },
-    { value: 3, label: 'Entregat' }
+    { value: 3, label: 'Entregat' },
+    { value: 4, label: 'No recollit' }
   ];
 
   constructor(
