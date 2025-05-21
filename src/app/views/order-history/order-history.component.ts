@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { OrderCardComponent } from '../../components/order-card/order-card.component';
 import { Order, MenuItem } from '../../interfaces/order-history';
-import { API_CONFIG } from '../../environments/api.config';
+import { OrdersService } from '../../Services/Orders/orders.service';
 
 @Component({
   selector: 'app-order-history',
@@ -21,44 +20,38 @@ export class OrderHistoryComponent implements OnInit {
   orders: Order[] = [];
   userId = 10;
 
-  constructor(private http: HttpClient) {}
+  constructor(private ordersService: OrdersService) {}
 
   ngOnInit(): void {
     this.loadOrders();
   }
 
   loadOrders(): void {
-    const url = `${API_CONFIG.baseUrl}/orders_by_user/${this.userId}`;
-
-    this.http.get<any>(url).subscribe({
+    // Suponiendo que tienes un endpoint tipo /orders_by_user/:userId
+    this.ordersService.getByUser(this.userId).subscribe({
       next: (response) => {
-        this.orders = (response.data || []).map((order: any) => {
-          const formattedDate = new Date(order.order_date).toLocaleDateString('es-ES', {
-            weekday: 'long',
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-          });
-
+        // Si response.data es un array de Order
+        this.orders = (response.data || []).map((order: Order) => {
+          // Construir menuItems según el tipo de pedido y orderDetail
           const menuItems: MenuItem[] = [];
           const type = order.orderType?.name?.toLowerCase() || '';
 
-          order.orderDetails.forEach((detail: any) => {
+          if (order.orderDetail) {
             if (type.includes('primer')) {
-              menuItems.push({ type: 'Primer Plato', name: detail.option1 });
+              menuItems.push({ type: 'Primer Plat', name: order.orderDetail.option1 });
             }
             if (type.includes('segon') || type.includes('segundo')) {
-              menuItems.push({ type: 'Segundo Plato', name: detail.option2 });
+              menuItems.push({ type: 'Segon Plat', name: order.orderDetail.option2 });
             }
             if (type.includes('postre')) {
-              menuItems.push({ type: 'Postre', name: detail.option3 });
+              menuItems.push({ type: 'Postre', name: order.orderDetail.option3 });
             }
-          });
+          }
 
           return {
-            date: formattedDate,
-            tupper: order.order_type_id === 1 ? 'Táper' : undefined,
+            ...order,
             menuItems,
+            tupper: order.has_tupper === 1 ? 'Táper' : undefined,
           };
         });
       },

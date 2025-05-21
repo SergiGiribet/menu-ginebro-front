@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Student } from '../../interfaces/student';
 import { Order, MenuItem } from '../../interfaces/order-history';
-import { API_CONFIG } from '../../environments/api.config';
 import { UsersService } from '../../Services/Admin/users/users.service';
+import { OrdersService } from '../../Services/Orders/orders.service';
+import { MenusService } from '../../Services/Menus/menu.service';
+
 @Component({
   selector: 'app-orders-dashboard',
   templateUrl: './orders-dashboard.component.html',
@@ -20,19 +21,12 @@ export class OrdersDashboardComponent implements OnInit {
   orders: Order[] = [];
   menus: MenuItem[] = [];
 
-  orderHistory: {
-    student: Student;
-    order: Order;
-    firstCourse?: MenuItem;
-    secondCourse?: MenuItem;
-    dessert?: MenuItem;
-  }[] = [];
-
   loadingOrders = true;
 
   constructor(
-    private http: HttpClient,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private ordersService: OrdersService,
+    private menusService: MenusService
   ) { }
 
   ngOnInit(): void {
@@ -55,8 +49,7 @@ export class OrdersDashboardComponent implements OnInit {
   }
 
   loadMenus(selectedDate: string): void {
-    const url = `${API_CONFIG.baseUrl}/menus/${selectedDate}`;
-    this.http.get<any>(url).subscribe({
+    this.menusService.getByDate(selectedDate).subscribe({
       next: (response) => {
         const dishes = response.data?.dishes || [];
         this.menus = dishes.map((dish: any) => ({
@@ -72,27 +65,28 @@ export class OrdersDashboardComponent implements OnInit {
 
   getDishType(id: number): string {
     switch (id) {
-      case 1:
-        return 'Primer Plat';
-      case 2:
-        return 'Segundo Plat';
-      case 3:
-        return 'Postre';
-      default:
-        return 'Altre';
+      case 1: return 'Primer Plat';
+      case 2: return 'Segundo Plat';
+      case 3: return 'Postre';
+      default: return 'Altre';
     }
   }
 
   loadOrders(date: string): void {
     this.loadingOrders = true;
-    const url = `${API_CONFIG.baseUrl}/orders_by_date/${date}`;
-    this.http.get<any>(url).subscribe({
-      next: (response) => {
-        this.orders = response.data || [];
+    this.ordersService.getByDate(date).subscribe({
+      next: (response: any) => {
+        let orders = response.data || [];
+        if (Array.isArray(orders) && Array.isArray(orders[0])) {
+          orders = orders.flat();
+        }
+        this.orders = orders;
         console.log('Orders:', this.orders);
+        this.loadingOrders = false;
       },
       error: (err) => {
         console.error('Failed to fetch orders', err);
+        this.loadingOrders = false;
       },
     });
   }
@@ -115,5 +109,13 @@ export class OrdersDashboardComponent implements OnInit {
 
   exportData(): void {
     console.log('Exporting data...');
+  }
+
+  onDateChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.value) {
+      this.selectedDate = input.value;
+      this.loadAllData();
+    }
   }
 }
