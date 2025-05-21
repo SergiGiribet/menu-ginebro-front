@@ -27,12 +27,9 @@ export class OrderHistoryComponent implements OnInit {
   }
 
   loadOrders(): void {
-    // Suponiendo que tienes un endpoint tipo /orders_by_user/:userId
     this.ordersService.getByUser(this.userId).subscribe({
       next: (response) => {
-        // Si response.data es un array de Order
         this.orders = (response.data || []).map((order: Order) => {
-          // Construir menuItems según el tipo de pedido y orderDetail
           const menuItems: MenuItem[] = [];
           const type = order.orderType?.name?.toLowerCase() || '';
 
