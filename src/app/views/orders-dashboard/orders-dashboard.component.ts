@@ -17,6 +17,9 @@ import { MenusService } from '../../Services/Menus/menu.service';
 export class OrdersDashboardComponent implements OnInit {
   activeTab = 'ordres';
   selectedDate = new Date().toISOString().split('T')[0];
+  weeklyMenus: { date: string; menus: MenuItem[] }[] = [];
+
+
 
   students: Student[] = [];
   orders: Order[] = [];
@@ -35,7 +38,7 @@ export class OrdersDashboardComponent implements OnInit {
     private usersService: UsersService,
     private ordersService: OrdersService,
     private menusService: MenusService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadAllData();
@@ -48,7 +51,7 @@ export class OrdersDashboardComponent implements OnInit {
 
   loadAllData(): void {
     if (this.activeTab === 'menus') {
-      this.loadMenus(this.selectedDate);
+      this.loadMenusWeek();
     } else if (this.activeTab === 'ordres') {
       this.loadOrders(this.selectedDate);
     } else if (this.activeTab === 'usuaris') {
@@ -56,19 +59,40 @@ export class OrdersDashboardComponent implements OnInit {
     }
   }
 
-  loadMenus(selectedDate: string): void {
-    this.menusService.getByDate(selectedDate).subscribe({
-      next: (response) => {
-        const dishes = response.data?.dishes || [];
-        this.menus = dishes.map((dish: any) => ({
-          type: this.getDishType(dish.dish_type_id),
-          name: JSON.parse(dish.options)[0] || 'N/A',
-        }));
-      },
-      error: (err) => {
-        console.error('Error loading menus:', err);
-      },
+  loadMenusWeek(): void {
+    const today = new Date(this.selectedDate);
+    const startOfWeek = new Date(today);
+    const day = today.getDay();
+    const diffToMonday = day === 0 ? -6 : 1 - day;
+    startOfWeek.setDate(today.getDate() + diffToMonday);
+
+    const datesOfWeek = Array.from({ length: 5 }, (_, i) => {
+      const d = new Date(startOfWeek);
+      d.setDate(d.getDate() + i);
+      return d.toISOString().split('T')[0];
     });
+
+    const menuPromises = datesOfWeek.map((date) =>
+      this.menusService.getByDate(date).toPromise()
+        .then((res: any) => {
+          const dishes = res.data?.dishes || [];
+          const parsedMenus: MenuItem[] = dishes.map((dish: any) => ({
+            type: this.getDishType(dish.dish_type_id),
+            name: JSON.parse(dish.options)[0] || 'N/A',
+            date
+          }));
+          return { date, menus: parsedMenus };
+        })
+        .catch(() => ({ date, menus: [] }))
+    );
+
+    Promise.all(menuPromises)
+      .then((results) => {
+        this.weeklyMenus = results;
+      })
+      .catch((err) => {
+        console.error('Error loading weekly menus:', err);
+      });
   }
 
   getDishType(id: number): string {
@@ -132,7 +156,14 @@ export class OrdersDashboardComponent implements OnInit {
   }
 
   onStatusChange(order: Order): void {
-    // Optional: implement backend update logic here
-    console.log('Order status changed:', order);
+    this.ordersService.updateStatus(order.id, order.orderStatus.id).subscribe({
+      next: () => {
+        console.log(`Estat actualitzat per l'ordre ${order.id}`);
+      },
+      error: (err) => {
+        console.error(`Error actualitzant l'estat:`, err);
+      }
+    });
   }
+
 }

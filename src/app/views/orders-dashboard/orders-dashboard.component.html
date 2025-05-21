@@ -1,141 +1,94 @@
-<section class="dashboard-container">
-  <nav class="tab-navigation" aria-label="Dashboard views">
-    <ul class="tab-list">
+<section class="p-5 font-sans">
+  <nav class="border-b border-gray-200 mb-6" aria-label="Dashboard views">
+    <ul class="flex gap-8 list-none p-0 m-0">
       <li>
-        <button
-          class="tab-button"
-          [class.active]="activeTab === 'ordres'"
-          (click)="setActiveTab('ordres')"
-          role="tab"
-          type="button"
-        >
+        <button class="py-3 text-gray-500 font-medium border-b-2 border-transparent hover:text-cyan-600"
+          [ngClass]="{ 'text-cyan-600 border-cyan-500': activeTab === 'ordres' }" (click)="setActiveTab('ordres')"
+          role="tab" type="button">
           Ordres
         </button>
       </li>
       <li>
-        <button
-          class="tab-button"
-          [class.active]="activeTab === 'menus'"
-          (click)="setActiveTab('menus')"
-          role="tab"
-          type="button"
-        >
+        <button class="py-3 text-gray-500 font-medium border-b-2 border-transparent hover:text-cyan-600"
+          [ngClass]="{ 'text-cyan-600 border-cyan-500': activeTab === 'menus' }" (click)="setActiveTab('menus')"
+          role="tab" type="button">
           Menus
         </button>
       </li>
       <li>
-        <button
-          class="tab-button"
-          [class.active]="activeTab === 'usuaris'"
-          (click)="setActiveTab('usuaris')"
-          role="tab"
-          type="button"
-        >
+        <button class="py-3 text-gray-500 font-medium border-b-2 border-transparent hover:text-cyan-600"
+          [ngClass]="{ 'text-cyan-600 border-cyan-500': activeTab === 'usuaris' }" (click)="setActiveTab('usuaris')"
+          role="tab" type="button">
           Usuaris
         </button>
       </li>
     </ul>
   </nav>
 
-  <div
-    class="controls-container"
-    *ngIf="activeTab !== 'json' && activeTab !== 'export'"
-  >
-    <div class="date-selector">
-      <button
-        class="calendar-button"
-        aria-label="Open calendar"
-        type="button"
-        (click)="dateInput?.focus()"
-      >
+  <div class="flex justify-between items-center mb-6" *ngIf="activeTab !== 'json' && activeTab !== 'export'">
+    <div class="flex items-center gap-3">
+      <button class="p-2 bg-white border border-gray-200 rounded cursor-pointer flex items-center justify-center"
+        aria-label="Open calendar" type="button" (click)="dateInput?.focus()">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M3 4H21V8H3V4Z"
-            stroke="currentColor"
-            stroke-width="2"
-          ></path>
+          <path d="M3 4H21V8H3V4Z" stroke="currentColor" stroke-width="2"></path>
           <path d="M4 8V20H20V8" stroke="currentColor" stroke-width="2"></path>
           <path d="M8 12H16" stroke="currentColor" stroke-width="2"></path>
         </svg>
       </button>
-      <input
-        #dateInput
-        type="date"
-        class="date-input"
-        [value]="selectedDate"
-        (change)="onDateChange($event)"
-        aria-label="Selected date"
-      />
+      <input #dateInput type="date" class="px-3 py-2 border border-gray-200 rounded text-sm" [value]="selectedDate"
+        (change)="onDateChange($event)" aria-label="Selected date" />
     </div>
 
-    <button
-      class="export-button"
-      aria-label="Export data"
-      (click)="exportData()"
-      type="button"
-      *ngIf="activeTab === 'ordres'"
-    >
+    <button *ngIf="activeTab === 'ordres'"
+      class="text-white px-4 py-2 rounded cursor-pointer flex items-center gap-2 text-sm bg-cyan-600 hover:bg-cyan-700"
+      aria-label="Export data" (click)="exportData()" type="button">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-        <path
-          d="M4 16V17C4 18.7 5.3 20 7 20H17C18.7 20 20 18.7 20 17V16"
-          stroke="white"
-          stroke-width="2"
-        ></path>
-        <path
-          d="M12 4V16M12 16L8 12M12 16L16 12"
-          stroke="white"
-          stroke-width="2"
-        ></path>
+        <path d="M4 16V17C4 18.7 5.3 20 7 20H17C18.7 20 20 18.7 20 17V16" stroke="white" stroke-width="2"></path>
+        <path d="M12 4V16M12 16L8 12M12 16L16 12" stroke="white" stroke-width="2"></path>
       </svg>
       <span>Exportar</span>
     </button>
   </div>
 
-  <div *ngIf="activeTab === 'ordres'" class="orders-container">
-    <table class="orders-table">
-      <thead>
+  <!-- ORDRES -->
+  <div *ngIf="activeTab === 'ordres'" class="bg-white rounded-lg shadow overflow-hidden">
+    <table class="w-full border-collapse text-left text-sm">
+      <thead class="bg-gray-50 border-b border-gray-200">
         <tr>
-          <th>Usuari</th>
-          <th>Email</th>
-          <th>Data</th>
-          <th>Tipus</th>
-          <th>Alergies</th>
-          <th>Primer plat</th>
-          <th>Segon plat</th>
-          <th>Postre</th>
-          <th>Estat</th>
-          <th>Porta Tupper</th>
+          <th class="px-6 py-3 text-gray-500 font-medium">Usuari</th>
+          <th class="px-6 py-3 text-gray-500 font-medium">Email</th>
+          <th class="px-6 py-3 text-gray-500 font-medium">Data</th>
+          <th class="px-6 py-3 text-gray-500 font-medium">Tipus</th>
+          <th class="px-6 py-3 text-gray-500 font-medium">Alergies</th>
+          <th class="px-6 py-3 text-gray-500 font-medium">Primer plat</th>
+          <th class="px-6 py-3 text-gray-500 font-medium">Segon plat</th>
+          <th class="px-6 py-3 text-gray-500 font-medium">Postre</th>
+          <th class="px-6 py-3 text-gray-500 font-medium">Estat</th>
+          <th class="px-6 py-3 text-gray-500 font-medium">Porta Tupper</th>
         </tr>
       </thead>
-
       <tbody>
-        <tr *ngFor="let order of orders">
-          <td>{{ order.userData.name }} {{ order.userData.last_name }}</td>
-          <td>{{ order.userData.email }}</td>
-          <td>{{ order.order_date }}</td>
-          <td>{{ order.orderType.name }}</td>
-          <td>{{ order.allergies || "—" }}</td>
-          <td>{{ order.orderDetail.option1 || "—" }}</td>
-          <td>{{ order.orderDetail.option2 || "—" }}</td>
-          <td>{{ order.orderDetail.option3 || "—" }}</td>
-          <td>
-            <select
-              [(ngModel)]="order.orderStatus.id"
-              name="statusSelect{{ order.id }}"
-              (change)="onStatusChange(order)"
-            >
-              <option
-                *ngFor="let option of statusOptions"
-                [value]="option.value"
-              >
+        <tr *ngFor="let order of orders" class="border-b border-gray-200">
+          <td class="px-6 py-3">{{ order.userData.name }} {{ order.userData.last_name }}</td>
+          <td class="px-6 py-3">{{ order.userData.email }}</td>
+          <td class="px-6 py-3">{{ order.order_date }}</td>
+          <td class="px-6 py-3">{{ order.orderType.name }}</td>
+          <td class="px-6 py-3">{{ order.allergies || '—' }}</td>
+          <td class="px-6 py-3">{{ order.orderDetail.option1 || '—' }}</td>
+          <td class="px-6 py-3">{{ order.orderDetail.option2 || '—' }}</td>
+          <td class="px-6 py-3">{{ order.orderDetail.option3 || '—' }}</td>
+          <td class="px-6 py-3">
+            <select [(ngModel)]="order.orderStatus.id" name="statusSelect{{ order.id }}"
+              class="border border-gray-300 rounded px-2 py-1 text-sm" (change)="onStatusChange(order)">
+              <option *ngFor="let option of statusOptions" [value]="option.value">
                 {{ option.label }}
               </option>
             </select>
           </td>
-          <td>{{ order.has_tupper === 1 ? "Sí" : "No" }}</td>
+          <td class="px-6 py-3">{{ order.has_tupper === 1 ? 'Sí' : 'No' }}</td>
         </tr>
         <tr *ngIf="orders.length === 0">
-          <td colspan="10" class="empty-state">
+          <td colspan="10" class="px-6 py-12 text-center text-gray-500">
             No orders found for {{ selectedDate }}.
           </td>
         </tr>
@@ -143,53 +96,59 @@
     </table>
   </div>
 
-  <div *ngIf="activeTab === 'menus'" class="menus-container">
-    <table class="menus-table">
-      <thead>
+  <!-- MENUS -->
+  <div *ngIf="activeTab === 'menus'" class="mt-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 w-full">
+      <div *ngFor="let date of weeklyMenus" class="bg-white rounded-lg shadow overflow-hidden">
+        <!-- Cabecera con la fecha -->
+        <div class="bg-gray-100 px-4 py-2 border-b border-gray-200 font-semibold text-gray-700 text-center">
+          {{ date.date }}
+        </div>
+
+        <!-- Tabla si hay menús -->
+        <table *ngIf="date.menus && date.menus.length > 0" class="w-full border-collapse text-left text-sm">
+          <thead class="bg-gray-50 border-b border-gray-200">
+            <tr>
+              <th class="px-4 py-2 text-gray-500 font-medium">Tipus</th>
+              <th class="px-4 py-2 text-gray-500 font-medium">Plat</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let menu of date.menus" class="border-b border-gray-200">
+              <td class="px-4 py-2">{{ menu.type }}</td>
+              <td class="px-4 py-2">{{ menu.name }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Mensaje si no hay menús -->
+        <div *ngIf="!date.menus || date.menus.length === 0" class="px-4 py-6 text-center text-gray-500 text-sm">
+          No hi han menus per la data seleccionada
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- USUARIS -->
+  <div *ngIf="activeTab === 'usuaris'" class="bg-white rounded-lg shadow overflow-hidden mt-4">
+    <table class="w-full border-collapse text-left text-sm">
+      <thead class="bg-gray-50 border-b border-gray-200">
         <tr>
-          <th>Tipus</th>
-          <th>Plat</th>
+          <th class="px-6 py-3 text-gray-500 font-medium">ID</th>
+          <th class="px-6 py-3 text-gray-500 font-medium">Name</th>
+          <th class="px-6 py-3 text-gray-500 font-medium">Last Name</th>
+          <th class="px-6 py-3 text-gray-500 font-medium">Email</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let menu of menus">
-          <td>{{ menu.type }}</td>
-          <td>{{ menu.name }}</td>
-        </tr>
-        <tr *ngIf="menus.length === 0">
-          <td colspan="2" class="empty-state">
-            No hi han menus per la data seleccionada
-          </td>
+        <tr *ngFor="let student of students" class="border-b border-gray-200">
+          <td class="px-6 py-3">{{ student.id }}</td>
+          <td class="px-6 py-3">{{ student.name }}</td>
+          <td class="px-6 py-3">{{ student.lastName }}</td>
+          <td class="px-6 py-3">{{ student.email }}</td>
         </tr>
       </tbody>
     </table>
-  </div>
-
-  <div *ngIf="activeTab === 'usuaris'">
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Last Name</th>
-          <th>Email</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let student of students">
-          <td>{{ student.id }}</td>
-          <td>{{ student.name }}</td>
-          <td>{{ student.lastName }}</td>
-          <td>{{ student.email }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div *ngIf="activeTab === 'json'">
-    <p>JSON content here (to be implemented)</p>
-  </div>
-  <div *ngIf="activeTab === 'export'">
-    <p>Export content here (to be implemented)</p>
   </div>
 </section>

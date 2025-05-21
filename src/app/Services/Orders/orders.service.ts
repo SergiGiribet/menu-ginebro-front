@@ -11,7 +11,7 @@ export class OrdersService {
   private apiUrl = `${API_CONFIG.baseUrl}/orders`;
   private apiUrlByDate = `${API_CONFIG.baseUrl}/orders_by_date`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private getHeaders(): HttpHeaders {
     const token = localStorage.getItem('token') || '';
@@ -25,10 +25,18 @@ export class OrdersService {
   }
 
   getByUser(userId: number): Observable<any> {
-  return this.http.get<any>(`${API_CONFIG.baseUrl}/orders_by_user/${userId}`, {
-    headers: this.getHeaders()
-  }).pipe(catchError(this.handleError));
-}
+    return this.http.get<any>(`${API_CONFIG.baseUrl}/orders_by_user/${userId}`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  updateStatus(orderId: number, statusId: number): Observable<any> {
+    return this.http.post(
+      `${API_CONFIG.baseUrl}/orders/updateStatus/${orderId}`,
+      { order_status_id: statusId },
+      { headers: this.getHeaders() }
+    ).pipe(catchError(this.handleError));
+  }
 
   private handleError(error: any) {
     console.error('OrdersService error:', error);
