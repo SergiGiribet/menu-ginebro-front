@@ -12,7 +12,7 @@ export class UsersService {
   public apiUrl = `${API_CONFIG.baseUrl}/users`;
   private apiUrlregister = `${API_CONFIG.baseUrl}/register`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private getHeaders(): HttpHeaders {
     const token = localStorage.getItem('token') || '';
@@ -51,7 +51,7 @@ export class UsersService {
       responseType: 'blob' as 'json',
       observe: 'response' as 'body'
     };
-  
+
     return this.http.get(`${this.apiUrl}/export?format=${format}`, options)
       .pipe(catchError(this.handleError));
   }
@@ -65,7 +65,17 @@ export class UsersService {
     return this.http.post(endpoint, {}, { headers: this.getHeaders() }).pipe(
       catchError(err => throwError(() => err))
     );
-  }  
+  }
+
+  enableUser(id: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/${id}/enable`, {}, { headers: this.getHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+
+  disableUser(id: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/${id}/disable`, {}, { headers: this.getHeaders() })
+      .pipe(catchError(this.handleError));
+  }
 
   private handleError(error: any) {
     console.error('ActivitiesService error:', error);

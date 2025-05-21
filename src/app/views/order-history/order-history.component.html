@@ -1,28 +1,28 @@
-<main class="order-history-container">
-    <div class="content-wrapper">
-      <header class="header">
-        <div class="title-container">
-          <div [innerHTML]="clockIcon"></div>
-          <div class="title">
-            <h1 class="title-text">Historial de Pedidos</h1>
-          </div>
+<main class="flex flex-col items-center min-h-screen px-4 py-6 font-sans bg-gray-50">
+  <div class="w-full max-w-[359px] md:max-w-3xl">
+    <header class="flex justify-between items-center mb-6">
+      <div class="flex items-center gap-2">
+        <div [innerHTML]="clockIcon"></div>
+        <div class="flex flex-col">
+          <h1 class="text-[#009ca6] text-[20px] md:text-[24px] font-bold leading-8 m-0">
+            Historial de Pedidos
+          </h1>
         </div>
-        <button class="back-button">
-          <span>Volver al Menú</span>
-        </button>
-      </header>
-  
-    <!-- No finalizado -->
-      <section class="orders-list">
-        @for (order of orders; track $index) {
-          <app-order-card
-            [date]="order.date"
-            [tupper]="order.tupper"
-            [menuItems]="order.menuItems"
-          ></app-order-card>
-        }
-      </section>
-      <!--  -->
-    </div>
-  </main>
-  
+      </div>
+      <button (click)="goToHomePage()" class="flex flex-col text-[#009ca6] text-sm md:text-base leading-6 bg-none border-none p-0 cursor-pointer text-left">
+        <span>Volver al Menú</span>
+      </button>
+    </header>
+
+    <!-- Order List -->
+    <section class="flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-6">
+      <app-order-card
+        *ngFor="let order of orders; index as i"
+        [date]="order.order_date"
+        [tupper]="order.tupper"
+        [menuItems]="order.menuItems || []"
+      >
+      </app-order-card>
+    </section>
+  </div>
+</main>

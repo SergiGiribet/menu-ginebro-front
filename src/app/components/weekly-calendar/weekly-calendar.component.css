@@ -1,8 +1,8 @@
-:host {
+/* :host {
   display: flex;
-  justify-content: center; /* centra horizontalmente */
-  align-items: flex-start; /* contenido arriba, no centrado vertical */
-  min-height: 100vh; /* mínimo alto para que ocupe toda la pantalla */
+  justify-content: center;
+  align-items: flex-start; 
+  min-height: 100vh; 
   width: 100%;
   margin: 0;
   padding: 0;
@@ -28,7 +28,7 @@
   }
 }
 
-/* El resto igual */
+
 .calendar-header {
   display: flex;
   align-items: center;
@@ -64,8 +64,8 @@
 .days-container {
   display: flex;
   justify-content: space-between;
-  gap: 16px; /* un poco más de espacio entre botones */
-  padding: 0 8px; /* un poco de padding horizontal para que no estén pegados a los lados */
+  gap: 16px; 
+  padding: 0 8px; 
 }
 
 @media (max-width: 640px) {
@@ -75,7 +75,7 @@
 }
 
 .day-button {
-  width: 60px; /* más ancho que los 46px actuales */
+  width: 60px; 
   height: 72px;
   padding: 12px 12px 14px;
   border-radius: 8px;
@@ -83,12 +83,12 @@
   border: none;
   background: transparent;
   margin: 0;
-  flex-shrink: 0; /* evita que se encojan demasiado */
+  flex-shrink: 0; 
 }
 
 @media (max-width: 640px) {
   .day-button {
-    width: calc(20% - 8px); /* para móvil sigue siendo proporcional */
+    width: calc(20% - 8px); 
   }
 }
 
@@ -139,4 +139,4 @@
 .day-button.highlighted .day-name,
 .day-button.highlighted .day-number {
   color: #009ca6;
-}
+} */

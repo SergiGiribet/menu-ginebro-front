@@ -7,4 +7,3 @@ export interface MenuOption {
     title: string;
     options: MenuOption[];
   }
-  
