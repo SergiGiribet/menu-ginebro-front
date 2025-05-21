@@ -190,15 +190,5 @@ export class OrdersDashboardComponent implements OnInit {
     this.loadOrders(this.selectedDate);
   }
 
-  isNextDayDisabled(): boolean {
-    const selected = new Date(this.selectedDate);
-    const tomorrow = new Date(selected);
-    tomorrow.setDate(selected.getDate() + 1);
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return tomorrow > today;
-  }
-
 
 }
