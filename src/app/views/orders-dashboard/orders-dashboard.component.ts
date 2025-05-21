@@ -6,6 +6,7 @@ import { Order, MenuItem } from '../../interfaces/order-history';
 import { UsersService } from '../../Services/Admin/users/users.service';
 import { OrdersService } from '../../Services/Orders/orders.service';
 import { MenusService } from '../../Services/Menus/menu.service';
+import { AlertService } from '../../Services/Alert/alert.service';
 
 @Component({
   selector: 'app-orders-dashboard',
@@ -37,7 +38,8 @@ export class OrdersDashboardComponent implements OnInit {
   constructor(
     private usersService: UsersService,
     private ordersService: OrdersService,
-    private menusService: MenusService
+    private menusService: MenusService,
+    private alertService: AlertService
   ) { }
 
   ngOnInit(): void {
@@ -158,10 +160,11 @@ export class OrdersDashboardComponent implements OnInit {
   onStatusChange(order: Order): void {
     this.ordersService.updateStatus(order.id, order.orderStatus.id).subscribe({
       next: () => {
-        console.log(`Estat actualitzat per l'ordre ${order.id}`);
+        this.alertService.show('success', 'Estat de la comanda modificada correctament.', '');
+        this.loadOrders(this.selectedDate);
       },
       error: (err) => {
-        console.error(`Error actualitzant l'estat:`, err);
+        this.alertService.show('error', 'Error en actualitzar l\'estat de la comanda.', '');
       }
     });
   }

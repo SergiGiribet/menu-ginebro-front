@@ -68,7 +68,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let order of orders" class="border-b border-gray-200">
+        <tr *ngFor="let order of orders" [ngClass]="{
+              'bg-yellow-300': order.orderStatus.id === 1,
+              'bg-blue-300': order.orderStatus.id === 2,
+              'bg-green-300': order.orderStatus.id === 3
+        }" class="border-b border-gray-200">
           <td class="px-6 py-3">{{ order.userData.name }} {{ order.userData.last_name }}</td>
           <td class="px-6 py-3">{{ order.userData.email }}</td>
           <td class="px-6 py-3">{{ order.order_date }}</td>
