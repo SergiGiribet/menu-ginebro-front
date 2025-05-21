@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { OrderCardComponent } from '../../components/order-card/order-card.component';
 import { Order, MenuItem } from '../../interfaces/order-history';
 import { OrdersService } from '../../Services/Orders/orders.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order-history',
@@ -20,7 +21,9 @@ export class OrderHistoryComponent implements OnInit {
   orders: Order[] = [];
   userId = 10;
 
-  constructor(private ordersService: OrdersService) {}
+  constructor(private ordersService: OrdersService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadOrders();
@@ -56,5 +59,9 @@ export class OrderHistoryComponent implements OnInit {
         console.error('Error loading order history:', err);
       },
     });
+  }
+
+  goToHomePage(): void {
+    this.router.navigate(['/home']);
   }
 }
