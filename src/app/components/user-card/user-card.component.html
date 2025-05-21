@@ -1,26 +1,39 @@
-<div class="user-card">
-    <div class="user-card-content">
-      <div class="avatar-container" [innerHTML]="avatarSvg"></div>
-      <div class="user-info">
-        <div class="user-name-container">
-          <p class="user-name">
-            <span class="first-name">{{ firstName }}</span>
-            <span class="name-spacer"></span>
-            <span class="middle-name">{{ middleName }}</span>
-            <span class="name-spacer"></span>
-            <span class="last-name">{{ lastName }}</span>
-          </p>
-        </div>
-        <p class="user-role">{{ role }}</p>
+<div class="h-screen flex items-start justify-center overflow-hidden p-4">
+  <div class="w-full max-w-[500px] mt-2 rounded-2xl shadow-lg overflow-hidden bg-white font-[Inter]">
+    <!-- Header -->
+    <div class="bg-[#009ca6] p-6 flex items-center gap-4 text-white">
+      <div class="w-12 h-12 flex justify-center items-center rounded-full bg-white/20" [innerHTML]="avatarSvg"></div>
+      <div class="flex flex-col">
+        <p class="text-[18px] font-bold leading-[1.2]">
+          <span>{{ firstName }}</span>
+          <span class="px-[2px]"></span>
+          <span>{{ middleName }}</span>
+          <span class="px-[2px]"></span>
+          <span>{{ lastName }}</span>
+        </p>
+        <p class="text-sm opacity-85 mt-1">{{ role }}</p>
       </div>
     </div>
-    <div class="user-details">
-      <p><strong>📚 Curso:</strong> {{ course }}</p>
-      <p><strong>📧 Email:</strong> {{ email }}</p>
-    </div>
-    <div class="user-settings">
-      <p class="settings-item">⚙️ Cambiar contraseña</p>
-      <p class="logout-item">🔴 Cerrar sesión</p>
+
+    <!-- Body -->
+    <div class="px-6 py-4 flex flex-col gap-4">
+      <!-- Datos -->
+      <div>
+        <p class="text-sm font-semibold text-[#333] mb-1">📚 Curso: <span class="font-normal">{{ course }}</span></p>
+        <p class="text-sm font-semibold text-[#333]">📧 Email: <span class="font-normal">{{ email }}</span></p>
+      </div>
+
+      <!-- Ajustes -->
+      <div class="border-t border-[#e0e0e0] pt-3">
+        <p class="flex justify-between items-center text-sm text-[#333] py-2 cursor-pointer hover:text-[#009ca6] transition">
+          <span>⚙️ Cambiar contraseña</span>
+          <span class="text-[#bbb] text-[18px]">›</span>
+        </p>
+        <p class="flex justify-between items-center text-sm text-red-600 font-semibold py-2 cursor-pointer hover:text-red-700 transition">
+          <span>🔴 Cerrar sesión</span>
+          <span class="text-[#bbb] text-[18px]">›</span>
+        </p>
+      </div>
     </div>
   </div>
-  
+</div>

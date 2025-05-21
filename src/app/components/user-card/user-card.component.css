@@ -1,4 +1,4 @@
-:host {
+/* :host {
     display: block;
   }
   
@@ -11,7 +11,7 @@
     font-family: "Inter", sans-serif;
   }
   
-  /* Header */
+
   .user-card-header {
     background-color: #009ca6;
     padding: 24px;
@@ -50,7 +50,7 @@
     margin-top: 4px;
   }
   
-  /* Body */
+
   .user-card-body {
     padding: 16px;
   }
@@ -94,4 +94,4 @@
   .logout-item {
     color: red;
     font-weight: 600;
-  }
+  } */
