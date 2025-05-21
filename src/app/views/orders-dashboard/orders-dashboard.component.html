@@ -52,6 +52,19 @@
 
   <!-- ORDRES -->
   <div *ngIf="activeTab === 'ordres'" class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="flex gap-2">
+      <button class="text-sm px-3 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 text-cyan-600"
+        (click)="changeDay(-1)">
+        ← Dia anterior
+      </button>
+
+      <button
+        class="text-sm px-3 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed text-cyan-600"
+        [disabled]="isNextDayDisabled()" (click)="changeDay(1)">
+        Dia següent →
+      </button>
+    </div>
+
     <table class="w-full border-collapse text-left text-sm">
       <thead class="bg-gray-50 border-b border-gray-200">
         <tr>
@@ -102,6 +115,14 @@
 
   <!-- MENUS -->
   <div *ngIf="activeTab === 'menus'" class="mt-4">
+    <button class="text-sm px-4 py-2 bg-white border border-gray-300 rounded hover:bg-gray-100 text-cyan-600"
+      (click)="changeWeek(-1)">
+      ← Setmana anterior
+    </button>
+    <button class="text-sm px-4 py-2 bg-white border border-gray-300 rounded hover:bg-gray-100 text-cyan-600"
+      (click)="changeWeek(1)">
+      Setmana següent →
+    </button>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 w-full">
       <div *ngFor="let date of weeklyMenus" class="bg-white rounded-lg shadow overflow-hidden">
         <!-- Cabecera con la fecha -->

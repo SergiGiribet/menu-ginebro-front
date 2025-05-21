@@ -169,4 +169,35 @@ export class OrdersDashboardComponent implements OnInit {
     });
   }
 
+  changeWeek(offset: number): void {
+    const current = new Date(this.selectedDate);
+    current.setDate(current.getDate() + offset * 7);
+    this.selectedDate = current.toISOString().split('T')[0];
+    this.loadMenusWeek();
+  }
+
+  changeDay(offset: number): void {
+    const current = new Date(this.selectedDate);
+    current.setDate(current.getDate() + offset);
+
+    const today = new Date();
+    const next = new Date(current);
+
+    if (offset > 0 && next > today) return;
+
+    this.selectedDate = current.toISOString().split('T')[0];
+    this.loadOrders(this.selectedDate);
+  }
+
+  isNextDayDisabled(): boolean {
+    const selected = new Date(this.selectedDate);
+    const tomorrow = new Date(selected);
+    tomorrow.setDate(selected.getDate() + 1);
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return tomorrow > today;
+  }
+
+
 }
