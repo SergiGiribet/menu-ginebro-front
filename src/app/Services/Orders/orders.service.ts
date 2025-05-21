@@ -38,8 +38,19 @@ export class OrdersService {
     ).pipe(catchError(this.handleError));
   }
 
+  export(format: string): Observable<any> {
+    const headers = this.getHeaders();
+    const options = {
+      headers,
+      responseType: 'blob' as 'json',
+      observe: 'response' as 'body'
+    };
+  
+    return this.http.get(`${this.apiUrl}/export?format=${format}`, options)
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(error: any) {
-    console.error('OrdersService error:', error);
     return throwError(() => error);
   }
 }

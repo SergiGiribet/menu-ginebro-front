@@ -19,6 +19,7 @@ export class OrdersDashboardComponent implements OnInit {
   activeTab = 'ordres';
   selectedDate = new Date().toISOString().split('T')[0];
   weeklyMenus: { date: string; menus: MenuItem[] }[] = [];
+  selectedExportFormat = 'json';
 
 
 
@@ -157,11 +158,13 @@ export class OrdersDashboardComponent implements OnInit {
   loadUsers(): void {
     this.usersService.getAll().subscribe({
       next: (users: any) => {
+        console.log('Users:', users);
         this.students = users.data.map((user: any) => ({
           id: user.id,
           name: user.name,
           lastName: user.last_name,
           email: user.email,
+          status: user.status,
         }));
       },
       error: (err) => {
@@ -170,8 +173,20 @@ export class OrdersDashboardComponent implements OnInit {
     });
   }
 
-  exportData(): void {
-    console.log('Exporting data...');
+  exportOrdersData(): void {
+    this.ordersService.export(this.selectedExportFormat).subscribe({
+      next: (response) => {
+        const blob = new Blob([response.body], { type: response.body.type });
+        const a = document.createElement('a');
+        a.href = window.URL.createObjectURL(blob);
+        a.download = `orders.${this.selectedExportFormat}`;
+        a.click();
+        window.URL.revokeObjectURL(a.href);
+      },
+      error: (err) => {
+        this.alertService.show('error', 'Error durant l\'exportació de dades.', '', 3000);
+      }
+    });
   }
 
   onDateChange(event: Event): void {
@@ -214,5 +229,28 @@ export class OrdersDashboardComponent implements OnInit {
     this.loadOrders(this.selectedDate);
   }
 
+  toggleUserStatus(student: Student): void {
+    const isActive = student.status === 1;
+    const request$ = isActive
+      ? this.usersService.disableUser(student.id)
+      : this.usersService.enableUser(student.id);
 
+    request$.subscribe({
+      next: () => {
+        student.status = isActive ? 0 : 1;
+        this.alertService.show(
+          'success',
+          `Usuari ${isActive ? 'desactivat' : 'activat'} correctament.`,
+          ''
+        );
+      },
+      error: (err) => {
+        this.alertService.show(
+          'error',
+          'Error en modificar l\'estat del usuari.',
+          ''
+        );
+      }
+    });
+  }
 }

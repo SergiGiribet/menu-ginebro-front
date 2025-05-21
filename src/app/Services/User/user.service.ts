@@ -12,7 +12,7 @@ export class StudentService {
   private baseUrl = `${API_CONFIG.baseUrl}/users`;
   private cachedStudent: Student | null = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getStudentById(id: number): Observable<Student> {
     if (this.cachedStudent) {
