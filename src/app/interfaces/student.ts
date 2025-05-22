@@ -5,4 +5,5 @@ export interface Student {
   email: string;
   password: string;
   status: number;
+  user_type_id?: number | null;
 }
