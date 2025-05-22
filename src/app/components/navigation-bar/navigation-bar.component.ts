@@ -40,7 +40,7 @@ export class NavigationBarComponent {
 
   getNavClasses(tab: string): string {
     return `
-      flex w-9 h-9 p-2 justify-center items-center rounded-lg cursor-pointer hover:bg-black/5
+      flex w-10 h-10 p-2 justify-center items-center rounded-lg cursor-pointer hover:bg-black/5
       ${this.activeTab === tab ? 'bg-black/5 text-[#009CA6]' : 'text-gray-600'}
     `;
   }

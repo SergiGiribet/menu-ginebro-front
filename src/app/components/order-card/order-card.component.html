@@ -1,18 +1,29 @@
-<section class="order-card">
-    <div class="order-header">
-      <div class="date-container">
-        <div [innerHTML]="calendarIcon"></div>
-        <p class="date-text">{{ date }}</p>
-      </div>
-      <p *ngIf="tupper" class="order-type">{{ tupper }}</p>
+<section class="w-full max-w-3xl mx-auto rounded-lg p-4 sm:p-6 shadow-[0px_4px_6px_-4px_rgba(0,0,0,0.1),0px_10px_15px_-3px_rgba(0,0,0,0.1)]">
+  <!-- Fecha y tupper -->
+  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-2 sm:gap-0">
+    <div class="flex items-center gap-2">
+      <img src="/icons/calendarIcon.png" class="w-4 h-4 sm:w-5 sm:h-5" alt="Calendario" />
+      <p class="text-gray-600 text-sm leading-6 m-0">{{ formattedDate }}</p>
     </div>
-    <div class="menu-items">
-      <app-menu-item
-        *ngFor="let item of menuItems"
-        [type]="item.type"
-        [name]="item.name"
-      >
-      </app-menu-item>
+    <div>
+      <p *ngIf="tupper; else noTupper" class="text-[#009ca6] text-sm leading-6 m-0">
+        {{ tupper }}
+      </p>
+      <ng-template #noTupper>
+        <p class="text-red-500 text-sm leading-6 m-0">
+          Sense tupper
+        </p>
+      </ng-template>
     </div>
-  </section>
-  
+  </div>
+
+  <!-- Platos pedidos -->
+  <div class="flex flex-wrap justify-start items-start gap-10 lg:gap-65">
+    <app-menu-item
+      *ngFor="let item of menuItems"
+      [type]="item.type"
+      [name]="item.name"
+      class="flex-shrink-0"
+    ></app-menu-item>
+  </div>
+</section>

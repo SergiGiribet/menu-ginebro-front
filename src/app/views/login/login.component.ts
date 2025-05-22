@@ -63,6 +63,10 @@ export class LoginComponent {
                       ? 'Benvingut de nou Admin'
                       : 'Has iniciat sessió correctament.';
                     this.alertService.show('success', 'Benvingut', message);
+                    if (isAdmin) {
+                      this.router.navigateByUrl(NavigationConfig.ADMIN, { replaceUrl: true });
+                      return;
+                    }
                     this.router.navigate([NavigationConfig.HOME]);
                   },
                   () => {

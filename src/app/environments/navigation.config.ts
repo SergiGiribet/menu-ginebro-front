@@ -4,6 +4,7 @@ export const NavigationConfig = {
     FORGOT_PASSWORD: 'forgotpassword',
 
     HOME: '',
+    ADMIN: 'admin',
     ACTIVITY_CREATE: 'activity/create',
     ACTIVITY_UPDATE: 'activity/update/:id',
     SCHEDULED_ACTIVITY_CREATE: 'scheduled-activity/create',

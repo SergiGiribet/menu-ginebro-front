@@ -3,13 +3,13 @@ import { CommonModule } from "@angular/common";
 import { StudentService } from "../../Services/User/user.service";
 import { Student } from "../../interfaces/student";
 import { Router } from "@angular/router";
-
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: "app-user-card",
   templateUrl: "./user-card.component.html",
   styleUrls: ["./user-card.component.css"],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatIconModule ],
 })
 export class UserCardComponent implements OnInit {
   student!: Student;
