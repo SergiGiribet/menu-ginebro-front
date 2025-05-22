@@ -1,21 +1,21 @@
-<main class="flex flex-col items-center min-h-screen px-4 py-6 font-sans bg-gray-50">
+<main class="flex flex-col items-center min-h-screen px-4 py-6 font-sans">
   <div class="w-full max-w-[359px] md:max-w-3xl">
     <header class="flex justify-between items-center mb-6">
       <div class="flex items-center gap-2">
         <div [innerHTML]="clockIcon"></div>
         <div class="flex flex-col">
-          <h1 class="text-[#009ca6] text-[20px] md:text-[24px] font-bold leading-8 m-0">
-            Historial de Pedidos
+          <h1 class="text-[#009a93] text-[20px] md:text-[24px] font-bold leading-8 m-0">
+            Historial de Comandes
           </h1>
         </div>
       </div>
-      <button (click)="goToHomePage()" class="flex flex-col text-[#009ca6] text-sm md:text-base leading-6 bg-none border-none p-0 cursor-pointer text-left">
-        <span>Volver al Menú</span>
+      <button (click)="goToHomePage()" class="flex flex-col text-[#009a93] text-sm md:text-base leading-6 bg-none border-none p-0 cursor-pointer text-left">
+        <span>Tornar al menú</span>
       </button>
     </header>
 
     <!-- Order List -->
-    <section class="flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-6">
+    <section class="flex flex-col gap-4">
       <app-order-card
         *ngFor="let order of orders; index as i"
         [date]="order.order_date"

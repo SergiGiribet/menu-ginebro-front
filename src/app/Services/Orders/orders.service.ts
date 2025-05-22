@@ -38,6 +38,17 @@ export class OrdersService {
     ).pipe(catchError(this.handleError));
   }
 
+  createOrder(order: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/`, order, { headers: this.getHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+
+  getOrderTypes(): Observable<any> {
+    return this.http.get<any>(`${API_CONFIG.baseUrl}/orders_type`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
   export(format: string): Observable<any> {
     const headers = this.getHeaders();
     const options = {
@@ -45,7 +56,7 @@ export class OrdersService {
       responseType: 'blob' as 'json',
       observe: 'response' as 'body'
     };
-  
+
     return this.http.get(`${this.apiUrl}/export?format=${format}`, options)
       .pipe(catchError(this.handleError));
   }

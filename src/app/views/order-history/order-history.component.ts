@@ -4,6 +4,7 @@ import { OrderCardComponent } from '../../components/order-card/order-card.compo
 import { Order, MenuItem } from '../../interfaces/order-history';
 import { OrdersService } from '../../Services/Orders/orders.service';
 import { Router } from '@angular/router';
+import { StudentService } from '../../Services/User/user.service';
 
 @Component({
   selector: 'app-order-history',
@@ -19,19 +20,22 @@ export class OrderHistoryComponent implements OnInit {
   </svg>`;
 
   orders: Order[] = [];
-  userId = 10;
-
+  userId: number = 1;
+  
   constructor(private ordersService: OrdersService,
-    private router: Router
+    private router: Router,
+    private studentService: StudentService
   ) {}
-
+  
   ngOnInit(): void {
+    this.userId = this.studentService.getLocalStudent()?.id || 1;
     this.loadOrders();
   }
 
   loadOrders(): void {
     this.ordersService.getByUser(this.userId).subscribe({
       next: (response) => {
+        console.log('Orders loaded:', response);
         this.orders = (response.data || []).map((order: Order) => {
           const menuItems: MenuItem[] = [];
           const type = order.orderType?.name?.toLowerCase() || '';
@@ -51,7 +55,7 @@ export class OrderHistoryComponent implements OnInit {
           return {
             ...order,
             menuItems,
-            tupper: order.has_tupper === 1 ? 'Táper' : undefined,
+            tupper: order.has_tupper === 1 ? 'Ha portat tàper' : undefined,
           };
         });
       },

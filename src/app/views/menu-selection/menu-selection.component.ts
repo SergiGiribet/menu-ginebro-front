@@ -4,6 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { MenuOption, MenuSection } from '../../interfaces/menu';
 import { WeeklyCalendarComponent } from '../../components/weekly-calendar/weekly-calendar.component';
 import { API_CONFIG } from '../../environments/api.config';
+import { OrdersService } from '../../Services/Orders/orders.service';
+import { MenusService } from '../../Services/Menus/menu.service';
+import { AlertService } from '../../Services/Alert/alert.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu-selection',
@@ -13,21 +17,42 @@ import { API_CONFIG } from '../../environments/api.config';
   imports: [CommonModule, WeeklyCalendarComponent],
 })
 export default class MenuSelectionComponent implements OnInit {
-  menuTypes = [
-    { name: 'Primer Plato + Postre', selected: false },
-    { name: 'Segundo Plato + Postre', selected: false },
-    { name: 'Menú Completo', selected: false },
-  ];
-
+  orderTypes: { id: number; name: string }[] = [];
+  menuTypes: { id: number; name: string; selected: boolean }[] = [];
   menuSections: MenuSection[] = [];
-
   taperSelected = false;
   selectedDate: Date = new Date();
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private ordersService: OrdersService,
+    private alertService: AlertService,
+    private route: Router,
+    private menusService: MenusService
+  ) { }
 
   ngOnInit(): void {
+    this.loadOrderTypes();
     this.loadMenuFromBackend();
+  }
+
+  loadOrderTypes(): void {
+    this.ordersService.getOrderTypes().subscribe({
+      next: (response) => {
+        const types = response.data || response;
+        this.orderTypes = types;
+        this.menuTypes = types.map((type: any) => ({
+          id: type.id,
+          name: type.name,
+          selected: false
+        }));
+      },
+      error: (err) => {
+        console.error('Error loading order types:', err);
+        this.orderTypes = [];
+        this.menuTypes = [];
+      }
+    });
   }
 
   onDateSelected(date: Date): void {
@@ -39,9 +64,7 @@ export default class MenuSelectionComponent implements OnInit {
     if (!this.selectedDate) return;
 
     const formattedDate = this.selectedDate.toISOString().split('T')[0];
-    const url = `${API_CONFIG.baseUrl}/menus/${formattedDate}`;
-
-    this.http.get<any>(url).subscribe({
+    this.menusService.getByDate(formattedDate).subscribe({
       next: (response) => {
         const dishes = response.data?.dishes || [];
         this.menuSections = [];
@@ -95,15 +118,43 @@ export default class MenuSelectionComponent implements OnInit {
   }
 
   confirmSelection(): void {
-    const selectedMenuType = this.menuTypes.find((type) => type.selected)?.name;
-    const selectedOptions = this.menuSections.map((section) => {
-      const selected = section.options.find((option) => option.selected);
-      return selected ? selected.name : 'None';
-    });
+    const selectedMenuType = this.menuTypes.find((type) => type.selected);
+    if (!selectedMenuType) {
+      alert('Selecciona un tipus de menú');
+      return;
+    }
 
-    console.log('Menú seleccionado:', selectedMenuType);
-    console.log('Platos seleccionados:', selectedOptions);
-    console.log('Traerá táper:', this.taperSelected);
+    const order_type_id = selectedMenuType.id;
+
+    const option1 = this.menuSections.find(s => s.title === 'Primer Plato')?.options.find(o => o.selected)?.name || '';
+    const option2 = this.menuSections.find(s => s.title === 'Segundo Plato')?.options.find(o => o.selected)?.name || '';
+    const option3 = this.menuSections.find(s => s.title === 'Postre')?.options.find(o => o.selected)?.name || '';
+
+    const allergies = '';
+
+    const order_date = this.selectedDate.toISOString().split('T')[0];
+
+    const payload = {
+      order_date,
+      allergies,
+      order_type_id,
+      order_status_id: 1,
+      has_tupper: this.taperSelected,
+      option1,
+      option2,
+      option3
+    };
+
+    this.ordersService.createOrder(payload).subscribe({
+      next: (response) => {
+        this.alertService.show('success', 'Comanda realitzada correctament.', '');
+        this.route.navigate(['/']);
+      },
+      error: (err) => {
+        this.alertService.show('error', 'Error al realitzar la comanda.', '');
+        console.error(err);
+      }
+    });
   }
 
   hasSelectedMenuType(): boolean {
@@ -117,21 +168,22 @@ export default class MenuSelectionComponent implements OnInit {
   filteredMenuSections(): MenuSection[] {
     const selected = this.menuTypes.find((type) => type.selected)?.name;
 
-    switch (selected) {
-      case 'Primer Plato + Postre':
-        return this.menuSections.filter(
-          (section) =>
-            section.title === 'Primer Plato' || section.title === 'Postre'
-        );
-      case 'Segundo Plato + Postre':
-        return this.menuSections.filter(
-          (section) =>
-            section.title === 'Segundo Plato' || section.title === 'Postre'
-        );
-      case 'Menú Completo':
-        return this.menuSections;
-      default:
-        return [];
+    if (!selected) return [];
+
+    if (selected.includes('Primer plat') && selected.includes('Segon plat')) {
+      return this.menuSections;
+    } else if (selected.includes('Primer plat')) {
+      return this.menuSections.filter(
+        (section) =>
+          section.title === 'Primer Plato' || section.title === 'Postre'
+      );
+    } else if (selected.includes('Segon plat')) {
+      return this.menuSections.filter(
+        (section) =>
+          section.title === 'Segundo Plato' || section.title === 'Postre'
+      );
+    } else {
+      return [];
     }
   }
 }

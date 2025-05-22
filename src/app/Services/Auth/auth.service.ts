@@ -88,6 +88,21 @@ export class AuthService extends BaseService {
     return this.post('forgot-password', { email });
   }
 
+  sendRegisterCode(email: string): Observable<any> {
+    return this.post('register/send-code', { email });
+  }
+
+  completeRegister(data: {
+    name: string;
+    last_name: string;
+    email: string;
+    verification_code: number;
+    password: string;
+    password_confirmation: string;
+  }): Observable<any> {
+    return this.post('register/complete', data);
+  }
+
   resetPassword(data: {
     email: string;
     code: number;
