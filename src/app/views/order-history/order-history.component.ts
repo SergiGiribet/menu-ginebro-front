@@ -55,7 +55,7 @@ export class OrderHistoryComponent implements OnInit {
           return {
             ...order,
             menuItems,
-            tupper: order.has_tupper === 1 ? 'Táper' : undefined,
+            tupper: order.has_tupper === 1 ? 'Ha portat tàper' : undefined,
           };
         });
       },
