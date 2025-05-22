@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { StudentService } from "../../Services/User/user.service";
 import { Student } from "../../interfaces/student";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-user-card",
@@ -18,7 +19,9 @@ export class UserCardComponent implements OnInit {
     <path d="M15.9998 14.6667C18.9454 14.6667 21.3332 12.2789 21.3332 9.33333C21.3332 6.38781 18.9454 4 15.9998 4C13.0543 4 10.6665 6.38781 10.6665 9.33333C10.6665 12.2789 13.0543 14.6667 15.9998 14.6667Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>`;
 
-  constructor(private studentService: StudentService) {}
+  constructor(private studentService: StudentService,
+    private router : Router
+  ) {}
 
   ngOnInit(): void {
     const rawUser = localStorage.getItem('user');
@@ -38,5 +41,9 @@ export class UserCardComponent implements OnInit {
         console.error("Failed to fetch student:", err);
       }
     });
+  }
+
+  logout() {
+    this.router.navigate(['/logout']);
   }
 }

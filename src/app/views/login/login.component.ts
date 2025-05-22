@@ -105,4 +105,8 @@ export class LoginComponent {
     this.loginForm.reset();
     this.isSubmitting = false;
   }
+
+  register(): void {
+    this.router.navigate(['/register']);
+  }
 }
