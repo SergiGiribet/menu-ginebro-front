@@ -46,33 +46,33 @@ export class WeeklyCalendarComponent implements OnInit {
     );
   }
 
-generateDays() {
-  this.days = [];
-  const startDate = new Date(this.currentWeekStartDate);
-const today = new Date();
-for (let i = 0; i < 5; i++) {
-  const currentDate = new Date(startDate);
-  currentDate.setDate(startDate.getDate() + i);
+  generateDays() {
+    this.days = [];
+    const startDate = new Date(this.currentWeekStartDate);
+    const today = new Date();
+    for (let i = 0; i < 5; i++) {
+      const currentDate = new Date(startDate);
+      currentDate.setDate(startDate.getDate() + i);
 
-  const isSelected = false;
-  const isHighlighted = false;
+      const isSelected = false;
+      const isHighlighted = false;
 
-  const isToday =
-    currentDate.getDate() === today.getDate() &&
-    currentDate.getMonth() === today.getMonth() &&
-    currentDate.getFullYear() === today.getFullYear() &&
-    currentDate.getDay() >= 1 && currentDate.getDay() <= 5;
+      const isToday =
+        currentDate.getDate() === today.getDate() &&
+        currentDate.getMonth() === today.getMonth() &&
+        currentDate.getFullYear() === today.getFullYear() &&
+        currentDate.getDay() >= 1 && currentDate.getDay() <= 5;
 
-  this.days.push({
-    dayName: this.dayNames[i],
-    dayNumber: currentDate.getDate(),
-    isSelected,
-    isHighlighted,
-    isToday,
-  });
-}
+      this.days.push({
+        dayName: this.dayNames[i],
+        dayNumber: currentDate.getDate(),
+        isSelected,
+        isHighlighted,
+        isToday,
+      });
+    }
 
-}
+  }
 
 
   navigatePreviousWeek() {
@@ -102,7 +102,7 @@ for (let i = 0; i < 5; i++) {
     const selectedDate = new Date(this.currentWeekStartDate);
     const index = this.days.indexOf(day);
     selectedDate.setDate(selectedDate.getDate() + index);
-
+    selectedDate.setHours(12, 0, 0, 0);
     // Emit the selected date
     this.daySelected.emit(selectedDate);
   }
