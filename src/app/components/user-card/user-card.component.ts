@@ -4,12 +4,13 @@ import { StudentService } from "../../Services/User/user.service";
 import { Student } from "../../interfaces/student";
 import { Router } from "@angular/router";
 import { MatIconModule } from '@angular/material/icon';
+import { AuthService } from "../../Services/Auth/auth.service";
 @Component({
   selector: "app-user-card",
   templateUrl: "./user-card.component.html",
   styleUrls: ["./user-card.component.css"],
   standalone: true,
-  imports: [CommonModule, MatIconModule ],
+  imports: [CommonModule, MatIconModule],
 })
 export class UserCardComponent implements OnInit {
   student!: Student;
@@ -20,7 +21,8 @@ export class UserCardComponent implements OnInit {
   </svg>`;
 
   constructor(private studentService: StudentService,
-    private router : Router
+    private router : Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -45,5 +47,10 @@ export class UserCardComponent implements OnInit {
 
   logout() {
     this.router.navigate(['/logout']);
+  }
+
+  forgotPassword() {
+    this.authService.logout();
+    this.router.navigate(['/forgotpassword']);
   }
 }
