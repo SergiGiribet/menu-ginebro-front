@@ -5,11 +5,12 @@ import { CommonModule} from '@angular/common';
 
 import { NavigationBarComponent } from './components/navigation-bar/navigation-bar.component';
 import { AlertContainerComponent } from './components/alert-container/alert-container.component';
+import { FooterComponent } from "./components/footer/footer.component";
 
 
 @Component({
   selector: 'app-root',
-  imports: [NavigationBarComponent, RouterOutlet, AlertContainerComponent, CommonModule],
+  imports: [NavigationBarComponent, RouterOutlet, AlertContainerComponent, CommonModule, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
