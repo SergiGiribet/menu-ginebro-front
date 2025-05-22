@@ -7,6 +7,7 @@ import { UsersService } from '../../Services/Admin/users/users.service';
 import { OrdersService } from '../../Services/Orders/orders.service';
 import { MenusService } from '../../Services/Menus/menu.service';
 import { AlertService } from '../../Services/Alert/alert.service';
+import { StudentService } from '../../Services/User/user.service';
 
 @Component({
   selector: 'app-orders-dashboard',
@@ -26,7 +27,7 @@ export class OrdersDashboardComponent implements OnInit {
   students: Student[] = [];
   orders: Order[] = [];
   menus: MenuItem[] = [];
-
+  admintype: number = 1;
   loadingOrders = true;
 
   // Status options for the select dropdown
@@ -41,10 +42,13 @@ export class OrdersDashboardComponent implements OnInit {
     private usersService: UsersService,
     private ordersService: OrdersService,
     private menusService: MenusService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private studentService: StudentService
   ) { }
 
   ngOnInit(): void {
+    this.admintype = this.studentService.getLocalStudent()?.user_type_id || 1;
+    console.log('Admin type:', this.admintype);
     this.loadAllData();
   }
 
