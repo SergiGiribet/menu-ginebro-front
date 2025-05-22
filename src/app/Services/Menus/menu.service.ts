@@ -10,7 +10,7 @@ import { API_CONFIG } from '../../environments/api.config';
 export class MenusService {
   private apiUrl = `${API_CONFIG.baseUrl}/menus`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private getHeaders(): HttpHeaders {
     const token = localStorage.getItem('token') || '';
@@ -22,9 +22,21 @@ export class MenusService {
       headers: this.getHeaders()
     }).pipe(catchError(this.handleError));
   }
+  export(format: string): Observable<any> {
+    const headers = this.getHeaders();
+    const options = {
+      headers,
+      responseType: 'blob' as 'json',
+      observe: 'response' as 'body'
+    };
+
+    return this.http.get(`${this.apiUrl}/export?format=${format}`, options)
+      .pipe(catchError(this.handleError));
+  }
 
   private handleError(error: any) {
     console.error('MenusService error:', error);
     return throwError(() => error);
   }
+
 }

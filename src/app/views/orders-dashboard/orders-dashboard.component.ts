@@ -193,6 +193,39 @@ export class OrdersDashboardComponent implements OnInit {
     });
   }
 
+  exportMenuData(): void {
+    this.menusService.export(this.selectedExportFormat).subscribe({
+      next: (response) => {
+        const blob = new Blob([response.body], { type: response.body.type });
+        const a = document.createElement('a');
+        a.href = window.URL.createObjectURL(blob);
+        a.download = `menus.${this.selectedExportFormat}`;
+        a.click();
+        window.URL.revokeObjectURL(a.href);
+      },
+      error: (err) => {
+        this.alertService.show('error', 'Error durant l\'exportació de dades.', '', 3000);
+      }
+    });
+  }
+
+  exportUserData(): void {
+    this.studentService.export(this.selectedExportFormat).subscribe({
+      next: (response) => {
+        const blob = new Blob([response.body], { type: response.body.type });
+        const a = document.createElement('a');
+        a.href = window.URL.createObjectURL(blob);
+        a.download = `users.${this.selectedExportFormat}`;
+        a.click();
+        window.URL.revokeObjectURL(a.href);
+      },
+      error: (err) => {
+        this.alertService.show('error', 'Error durant l\'exportació de dades.', '', 3000);
+      }
+    });
+  }
+
+
   onDateChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.value) {

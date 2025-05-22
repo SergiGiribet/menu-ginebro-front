@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, map, of } from 'rxjs';
+import { Observable, catchError, map, of, throwError } from 'rxjs';
 import { Student } from '../../interfaces/student';
 import { API_CONFIG } from '../../environments/api.config';
 
@@ -13,7 +13,10 @@ export class StudentService {
   private cachedStudent: Student | null = null;
 
   constructor(private http: HttpClient) { }
-
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token') || '';
+    return new HttpHeaders({ Authorization: `Bearer ${token}` });
+  }
   getStudentById(id: number): Observable<Student> {
     if (this.cachedStudent) {
       return of(this.cachedStudent);
@@ -33,6 +36,18 @@ export class StudentService {
           return user;
         })
       );
+  }
+
+  export(format: string): Observable<any> {
+    const headers = this.getHeaders();
+    const options = {
+      headers,
+      responseType: 'blob' as 'json',
+      observe: 'response' as 'body'
+    };
+
+    return this.http.get(`${this.baseUrl}/export?format=${format}`, options)
+      .pipe(catchError(this.handleError));
   }
 
   getLocalStudent(): Student | null {
@@ -72,5 +87,10 @@ export class StudentService {
 
   isAdmin(): boolean {
     return localStorage.getItem('isAdmin') === 'true';
+  }
+
+  private handleError(error: any) {
+    console.error('StudentService error:', error);
+    return throwError(() => error);
   }
 }
