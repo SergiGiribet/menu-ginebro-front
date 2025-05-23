@@ -145,14 +145,25 @@ export default class MenuSelectionComponent implements OnInit {
       option3
     };
 
-    this.ordersService.createOrder(payload).subscribe({
+    this.ordersService.checkDateAvailability(order_date).subscribe({
       next: (response) => {
-        this.alertService.show('success', 'Comanda realitzada correctament.', '');
-        this.route.navigate(['/']);
+        if (response.data?.available) {
+          this.ordersService.createOrder(payload).subscribe({
+            next: (response) => {
+              this.alertService.show('success', 'Comanda realitzada correctament.', '');
+              this.route.navigate(['/']);
+            },
+            error: (err) => {
+              this.alertService.show('error', 'Error al realitzar la comanda.', '');
+              console.error(err);
+            }
+          });
+        } else {
+          this.alertService.show('error', 'No pots realitzar més d\'una comanda pel mateix dia.', '');
+        }
       },
       error: (err) => {
-        this.alertService.show('error', 'Error al realitzar la comanda.', '');
-        console.error(err);
+        this.alertService.show('error', 'Error al verificar la disponibilitat de la data.', '');
       }
     });
   }
