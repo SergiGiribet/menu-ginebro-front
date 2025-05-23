@@ -49,6 +49,12 @@ export class OrdersService {
     }).pipe(catchError(this.handleError));
   }
 
+  checkDateAvailability(date: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/checkDate/${date}`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
   export(format: string): Observable<any> {
     const headers = this.getHeaders();
     const options = {

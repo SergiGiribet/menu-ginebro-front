@@ -15,6 +15,7 @@ import { PublicGuard } from './guards/public.guard';
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [PublicGuard] },
   { path: 'forgotpassword', component: ForgotPasswordComponent, canActivate: [PublicGuard] },
+  { path: 'reset-password', component: ForgotPasswordComponent},
   { path: 'register', component: StudentRegistrationComponent, canActivate: [PublicGuard] },
   { path: 'logout', component: LogoutComponent, canActivate: [AuthGuard]  },
   { path: '', component: WelcomeScreenComponent, canActivate: [AuthGuard] }, // Ruta raíz

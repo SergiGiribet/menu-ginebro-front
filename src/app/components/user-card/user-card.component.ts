@@ -50,7 +50,6 @@ export class UserCardComponent implements OnInit {
   }
 
   forgotPassword() {
-    this.authService.logout();
-    this.router.navigate(['/forgotpassword']);
+    this.router.navigate(['/reset-password']);
   }
 }
