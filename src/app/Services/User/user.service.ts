@@ -89,6 +89,10 @@ export class StudentService {
     return localStorage.getItem('isAdmin') === 'true';
   }
 
+  import(body: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/import`, body, { headers: this.getHeaders() });
+  }
+
   private handleError(error: any) {
     console.error('StudentService error:', error);
     return throwError(() => error);

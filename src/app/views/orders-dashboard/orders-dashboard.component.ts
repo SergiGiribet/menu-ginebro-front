@@ -8,13 +8,15 @@ import { OrdersService } from '../../Services/Orders/orders.service';
 import { MenusService } from '../../Services/Menus/menu.service';
 import { AlertService } from '../../Services/Alert/alert.service';
 import { StudentService } from '../../Services/User/user.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { BulkUploadModalComponent } from '../../components/bulk-upload-modal/bulk-upload-modal.component';
 
 @Component({
   selector: 'app-orders-dashboard',
   templateUrl: './orders-dashboard.component.html',
   styleUrls: ['./orders-dashboard.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule],  // <-- add FormsModule here
+  imports: [CommonModule, FormsModule, MatDialogModule],
 })
 export class OrdersDashboardComponent implements OnInit {
   activeTab = 'ordres';
@@ -22,13 +24,16 @@ export class OrdersDashboardComponent implements OnInit {
   weeklyMenus: { date: string; menus: MenuItem[] }[] = [];
   selectedExportFormat = 'json';
 
-
-
   students: Student[] = [];
   orders: Order[] = [];
   menus: MenuItem[] = [];
   admintype: number = 1;
   loadingOrders = true;
+
+  // Bulk popup
+  showImportPopup = false;
+  importType: 'menus' | 'usuaris' = 'menus';
+  selectedFile: File | null = null;
 
   // Status options for the select dropdown
   statusOptions = [
@@ -43,7 +48,8 @@ export class OrdersDashboardComponent implements OnInit {
     private ordersService: OrdersService,
     private menusService: MenusService,
     private alertService: AlertService,
-    private studentService: StudentService
+    private studentService: StudentService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -290,4 +296,68 @@ export class OrdersDashboardComponent implements OnInit {
       }
     });
   }
+
+  openImportPopup(type: 'menus' | 'usuaris'): void {
+    this.importType = type;
+    const dialogRef = this.dialog.open(BulkUploadModalComponent, {
+      width: '500px',
+      data: {
+        plantillaUrl: type === 'menus' ? '/import_templates/import_menus_example.json' : '/import_templates/import_users_example.json',
+        descripcion: type === 'menus' ? 'Importar menús desde un archivo JSON' : 'Importar usuarios desde un archivo JSON'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (type === 'menus') {
+          this.menusService.import(result).subscribe({
+            next: () => {
+              this.alertService.show('success', 'Menús importats correctament', '', 3000);
+              this.loadMenusWeek();
+            },
+            error: (error: Error) => {
+              this.alertService.show('error', 'Error durant la importació dels menús', '', 3000);
+            }
+          });
+        } else {
+          this.studentService.import(result).subscribe({
+            next: () => {
+              this.alertService.show('success', 'Usuaris importats correctament', '', 3000);
+              this.loadUsers();
+            },
+            error: (error: Error) => {
+              this.alertService.show('error', 'Error durant la importació dels usuaris', '', 3000);
+            }
+          });
+        }
+      }
+    });
+  }
+
+  importData(json: any): void {
+  if (!json) return;
+  if (this.importType === 'menus') {
+    this.menusService.import(json).subscribe({
+      next: () => {
+        this.alertService.show('success', 'Menús importats correctament', '', 3000);
+        this.loadMenusWeek();
+      },
+      error: (error: Error) => {
+        this.alertService.show('error', 'Error durant la importació dels menús', '', 3000);
+      }
+    });
+  } else {
+    this.studentService.import(json).subscribe({
+      next: () => {
+        this.alertService.show('success', 'Usuaris importats correctament', '', 3000);
+        this.loadUsers();
+      },
+      error: (error: Error) => {
+        this.alertService.show('error', 'Error durant la importació dels usuaris', '', 3000);
+      }
+    });
+  }
+  this.showImportPopup = false; // Cierra el popup si usas el modal antiguo
+}
+
 }
