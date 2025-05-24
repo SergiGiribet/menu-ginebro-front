@@ -34,6 +34,10 @@ export class MenusService {
       .pipe(catchError(this.handleError));
   }
 
+  import(body: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/import`, body, { headers: this.getHeaders() });
+  }
+
   private handleError(error: any) {
     console.error('MenusService error:', error);
     return throwError(() => error);
