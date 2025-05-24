@@ -303,7 +303,7 @@ export class OrdersDashboardComponent implements OnInit {
       width: '500px',
       data: {
         plantillaUrl: type === 'menus' ? '/import_templates/import_menus_example.json' : '/import_templates/import_users_example.json',
-        descripcion: type === 'menus' ? 'Importar menús desde un archivo JSON' : 'Importar usuarios desde un archivo JSON'
+        descripcion: type === 'menus' ? 'Importar menus des d\'un arxiu JSON' : 'Importar usuaris des d\'un arxiu JSON'
       }
     });
 
